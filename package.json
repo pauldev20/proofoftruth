@@ -30,9 +30,10 @@
     "next:serve": "yarn workspace @se-2/nextjs serve",
     "precommit": "lint-staged",
     "start": "yarn workspace @se-2/nextjs dev",
+    "startapp": "yarn workspace nextjs-app dev",
     "test": "yarn foundry:test",
-    "vercel": "yarn workspace @se-2/nextjs vercel",
-    "vercel:yolo": "yarn workspace @se-2/nextjs vercel:yolo",
+    "vercel": "yarn workspace nextjs-app vercel",
+    "vercel:yolo": "yarn workspace nextjs-app vercel:yolo",
     "verify": "yarn workspace @se-2/foundry verify"
   },
   "devDependencies": {
