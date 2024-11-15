@@ -1,16 +1,16 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "../contracts/YourContract.sol";
+import "../contracts/HumanOracle.sol";
 import "./DeployHelpers.s.sol";
 
 contract DeployYourContract is ScaffoldETHDeploy {
   // use `deployer` from `ScaffoldETHDeploy`
   function run() external ScaffoldEthDeployerRunner {
-    YourContract yourContract = new YourContract(deployer);
+    HumanOracle humanOracle = new HumanOracle();
     console.logString(
       string.concat(
-        "YourContract deployed at: ", vm.toString(address(yourContract))
+        "HumanOracle deployed at: ", vm.toString(address(humanOracle))
       )
     );
   }
