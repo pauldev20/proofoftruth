@@ -1,10 +1,10 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "../contracts/WorldIdRegister.sol";
+import "../contracts/HumanOracleWithWorldIdRegister.sol";
 import "./DeployHelpers.s.sol";
 
-contract DeployWorldIDRegister is ScaffoldETHDeploy {
+contract DeployHumanOracleWithWorldIdRegister is ScaffoldETHDeploy {
 
   address public worldIdAddr = 0x17B354dD2595411ff79041f930e491A4Df39A278;
   uint256 public groupId = 1;
@@ -12,10 +12,10 @@ contract DeployWorldIDRegister is ScaffoldETHDeploy {
   string public action = "registration";
 
   function run() external ScaffoldEthDeployerRunner {
-    WorldIdRegister worldIDRegister = new WorldIdRegister(worldIdAddr, groupId, appId, action);
+    HumanOracleWithWorldIdRegister humanOracle = new HumanOracleWithWorldIdRegister(worldIdAddr, groupId, appId, action);
     console.logString(
       string.concat(
-        "WorldIDRegister deployed at: ", vm.toString(address(worldIDRegister))
+        "HumanOracleWithWorldIdRegister deployed at: ", vm.toString(address(humanOracle))
       )
     );
   }

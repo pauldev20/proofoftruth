@@ -6,6 +6,7 @@ import { DeployMockHumanOracle } from "./DeployMockHumanOracle.s.sol";
 import { DeployHumanOracle } from "./DeployHumanOracle.s.sol";
 import { DeployHumanOracleWithVault } from "./DeployHumanOracleWithVault.s.sol";
 import { DeployWorldIDRegister } from "./DeployWorldIDRegister.s.sol";
+import { DeployHumanOracleWithWorldIdRegister } from "./DeployHumanOracleWithWorldIdRegister.s.sol";
 
 contract DeployScript is ScaffoldETHDeploy {
   function run() external {
@@ -15,8 +16,11 @@ contract DeployScript is ScaffoldETHDeploy {
     // DeployHumanOracle deployHumanOracle = new DeployHumanOracle();
     // deployHumanOracle.run();
 
-    DeployHumanOracleWithVault deployHumanOracleWithVault = new DeployHumanOracleWithVault();
-    deployHumanOracleWithVault.run();
+    // DeployHumanOracleWithVault deployHumanOracleWithVault = new DeployHumanOracleWithVault();
+    // deployHumanOracleWithVault.run();
+
+    DeployHumanOracleWithWorldIdRegister deployHumanOracleWithWorldIdRegister = new DeployHumanOracleWithWorldIdRegister();
+    deployHumanOracleWithWorldIdRegister.run();
 
     // DeployWorldIDRegister worldIDregister = new DeployWorldIDRegister();
     // worldIDregister.run();
