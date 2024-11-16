@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { Statement } from "./page";
 import { waitOnTransaction } from "@/lib/miniKit";
 import { useContractContext } from "@/providers/contractProvider";
 import { Button } from "@nextui-org/button";
 import { Slider } from "@nextui-org/slider";
+import { Spinner } from "@nextui-org/spinner";
 import { MiniKit } from "@worldcoin/minikit-js";
 import { CheckIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
@@ -10,34 +12,13 @@ interface BottomSheetProps {
     selected: string | null;
     loading: boolean;
     setLoading: (loading: boolean) => void;
-    data: {
-        answers: { answer: string; stake: number }[];
-        totalStake: number;
-    };
+    refresher: () => void;
+    data: Statement;
     id: number;
 }
-export default function BottomSheet({ selected, loading, setLoading, data, id }: BottomSheetProps) {
-    const [stateStr, setStateStr] = useState("ongoing");
+export default function BottomSheet({ selected, loading, setLoading, refresher, data, id }: BottomSheetProps) {
     const [stakeFactor, setStakeFactor] = useState(1);
     const { HumanOracle } = useContractContext();
-
-    useEffect(() => {
-        (async () => {
-            const over = (await HumanOracle.read.isVotingOver([id])) as boolean;
-            const voted = (await HumanOracle.read.hasUserVotedForVote([MiniKit.walletAddress, id])) as boolean;
-            const claimed = (await HumanOracle.read.hasUserClaimedForVote([MiniKit.walletAddress, id])) as boolean;
-
-            if (!over && !voted) {
-                setStateStr("ongoing");
-            } else if (!over && voted) {
-                setStateStr("voted");
-            } else if (over && !claimed) {
-                setStateStr("claimable");
-            } else if (over && claimed) {
-                setStateStr("claimed");
-            }
-        })();
-    }, []);
 
     const handleVote = async () => {
         if (!selected || !data) return;
@@ -50,7 +31,7 @@ export default function BottomSheet({ selected, loading, setLoading, data, id }:
                         address: HumanOracle.address,
                         abi: HumanOracle.abi,
                         functionName: "submitVotingDecisionWithStake",
-                        args: [Number(id), data.answers.findIndex(item => item.answer === selected) || 0, stakeFactor],
+                        args: [id, data.answers.findIndex(item => item.answer === selected) || 0, stakeFactor],
                     },
                 ],
             });
@@ -66,6 +47,7 @@ export default function BottomSheet({ selected, loading, setLoading, data, id }:
             }
             console.log(tx);
             setLoading(false);
+            refresher();
         } catch (error) {
             console.error(error);
             setLoading(false);
@@ -99,6 +81,7 @@ export default function BottomSheet({ selected, loading, setLoading, data, id }:
             }
             console.log(tx);
             setLoading(false);
+            refresher();
         } catch (error) {
             console.error(error);
             setLoading(false);
@@ -110,24 +93,38 @@ export default function BottomSheet({ selected, loading, setLoading, data, id }:
             className="w-full flex flex-col items-center gap-2 p-3 py-7 mt-auto rounded-t-2xl"
             style={{ boxShadow: "0 -4px 6px -2px rgba(0, 0, 0, 0.1)" }}
         >
-            {stateStr == "claimed" && (
+            {/* Loading Spinner */}
+            {loading && (
+                <div className="flex flex-row gap-1 items-center">
+                    <Spinner size="md" />
+                </div>
+            )}
+
+            {/* No Reward Text */}
+            {data.over && data.claimed && !loading && (
                 <div className="flex flex-row gap-1 items-center">
                     <h1 className="text-xl">No reward to claim</h1>
                     <ExclamationCircleIcon className="size-8 text-yellow-500" />
                 </div>
             )}
-            {stateStr == "voted" && (
+
+            {/* Voted Text */}
+            {!data.over && data.voted && !loading && (
                 <div className="flex flex-row gap-1 items-center">
                     <h1 className="text-xl">You submitted a vote</h1>
                     <CheckIcon className="size-10 text-green-500" />
                 </div>
             )}
-            {stateStr == "claimable" && (
+
+            {/* Over and Not Claimed Button */}
+            {data.over && !data.claimed && !loading && (
                 <Button fullWidth color="primary" disabled={loading} onClick={handleClaim}>
                     Claim Reward
                 </Button>
             )}
-            {stateStr == "ongoing" && (
+
+            {/* Not Over and Not Voted */}
+            {!data.over && !data.voted && !loading && (
                 <>
                     <Slider
                         size="md"

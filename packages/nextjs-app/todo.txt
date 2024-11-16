@@ -1,2 +1,2 @@
-- login screen logo in middle with name, signin button at bottom?
 - add toasts for errors (from top?)
+- walletAuth automatic signin

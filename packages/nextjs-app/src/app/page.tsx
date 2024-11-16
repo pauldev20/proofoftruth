@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { waitOnTransaction } from "@/lib/miniKit";
 import { useContractContext } from "@/providers/contractProvider";
@@ -8,6 +9,9 @@ import { Button } from "@nextui-org/button";
 import { MiniAppVerifyActionSuccessPayload, MiniKit, VerificationLevel } from "@worldcoin/minikit-js";
 import { decodeAbiParameters } from "viem";
 
+/* -------------------------------------------------------------------------- */
+/*                                    Page                                    */
+/* -------------------------------------------------------------------------- */
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const { HumanOracle } = useContractContext();
@@ -88,8 +92,6 @@ export default function LoginPage() {
                     ],
                 });
 
-                console.log(transactionResult, HumanOracle.address, HumanOracle.abi);
-
                 if (transactionResult.finalPayload.status === "error") {
                     throw new Error("Error in submitting transaction");
                 }
@@ -114,10 +116,18 @@ export default function LoginPage() {
     };
 
     return (
-        <section className="h-dvh flex flex-col items-center justify-end p-9">
-            <Button fullWidth color="primary" isLoading={loading} radius="sm" onClick={onLoginSignup}>
-                Sign In / Sign Up
-            </Button>
+        <section className="h-dvh flex flex-col items-center justify-between p-14">
+            {/* Logo Image */}
+            <div className="flex flex-col items-center justify-center h-full">
+                <Image alt="Logo" src="/logo.svg" width={250} height={250} />
+            </div>
+
+            {/* Sign In / Sign Up Button */}
+            <div className="w-full">
+                <Button fullWidth color="primary" isLoading={loading} radius="sm" onClick={onLoginSignup}>
+                    Sign In / Sign Up
+                </Button>
+            </div>
         </section>
     );
 }

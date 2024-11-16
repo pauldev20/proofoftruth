@@ -6,7 +6,7 @@ interface NavbarProps {
 }
 export default function Navbar({ startContent, endContent }: NavbarProps) {
     return (
-        <div className="h-10 w-full flex items-center justify-between m-4 px-3">
+        <div className="h-10 w-full flex items-center justify-between m-4 px-5">
             <div>{startContent}</div>
             <div>{endContent}</div>
         </div>

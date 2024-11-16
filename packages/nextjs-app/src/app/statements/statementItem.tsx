@@ -1,7 +1,10 @@
-import IconButton from "./iconButton";
+import IconButton from "@/components/iconButton";
 import { Card, CardBody } from "@nextui-org/card";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
+/* -------------------------------------------------------------------------- */
+/*                                StatementItem                               */
+/* -------------------------------------------------------------------------- */
 interface StatementItemProps {
     title: string;
     amount: number;

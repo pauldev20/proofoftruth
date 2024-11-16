@@ -8,6 +8,9 @@ import "@/styles/globals.css";
 import clsx from "clsx";
 import { Metadata, Viewport } from "next";
 
+/* -------------------------------------------------------------------------- */
+/*                                  Metadata                                  */
+/* -------------------------------------------------------------------------- */
 export const metadata: Metadata = {
     title: {
         default: appConfig.title,
@@ -16,6 +19,11 @@ export const metadata: Metadata = {
     description: appConfig.description,
 };
 
+/* -------------------------------------------------------------------------- */
+/*                                    Font                                    */
+/* -------------------------------------------------------------------------- */
+const inter = Inter({ subsets: ["latin"] });
+
 // export const viewport: Viewport = {
 //     themeColor: [
 //         { media: "(prefers-color-scheme: light)", color: "white" },
@@ -23,8 +31,9 @@ export const metadata: Metadata = {
 //     ],
 // };
 
-const inter = Inter({ subsets: ["latin"] });
-
+/* -------------------------------------------------------------------------- */
+/*                                   Layout                                   */
+/* -------------------------------------------------------------------------- */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html suppressHydrationWarning lang="en">
