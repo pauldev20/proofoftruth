@@ -290,7 +290,7 @@ const deployedContracts = {
   },
   480: {
     HumanOracle: {
-      address: "0x0bb141ef91dec0d190aa01b6d6d9d840cc3d04cc",
+      address: "0x4f959689ee94f28698eb0b4f6a4477ff5dce3c73",
       abi: [
         {
           type: "constructor",
@@ -361,33 +361,14 @@ const deployedContracts = {
               type: "uint256",
               internalType: "uint256",
             },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "getUserHasClaimedForVote",
-          inputs: [
             {
-              name: "userAddr",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "voteId",
+              name: "bounty",
               type: "uint256",
               internalType: "uint256",
             },
           ],
-          outputs: [
-            {
-              name: "",
-              type: "bool",
-              internalType: "bool",
-            },
-          ],
-          stateMutability: "view",
+          outputs: [],
+          stateMutability: "nonpayable",
         },
         {
           type: "function",
@@ -442,6 +423,30 @@ const deployedContracts = {
               name: "stakePerAnswer",
               type: "uint256[]",
               internalType: "uint256[]",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "hasUserClaimedForVote",
+          inputs: [
+            {
+              name: "userAddr",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "voteId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
             },
           ],
           stateMutability: "view",
