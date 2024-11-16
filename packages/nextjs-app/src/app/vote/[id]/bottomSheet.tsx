@@ -27,6 +27,15 @@ export default function BottomSheet({ selected, loading, setLoading, refresher, 
         try {
             const deadline = Math.floor((Date.now() + 30 * 60 * 1000) / 1000).toString();
 
+            const permitTransfer = {
+                permitted: {
+                    token: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003",
+                    amount: stakeFactor.toString(),
+                },
+                nonce: Date.now().toString(),
+                deadline,
+            };
+
             const transactionResult = await MiniKit.commandsAsync.sendTransaction({
                 transaction: [
                     {
@@ -37,18 +46,15 @@ export default function BottomSheet({ selected, loading, setLoading, refresher, 
                             id,
                             data.answers.findIndex(item => item.answer === selected) || 0,
                             stakeFactor,
+                            permitTransfer.nonce,
+                            permitTransfer.deadline,
                             "PERMIT2_SIGNATURE_PLACEHOLDER_0",
                         ],
                     },
                 ],
                 permit2: [
                     {
-                        permitted: {
-                            token: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003",
-                            amount: "10000",
-                        },
-                        nonce: Date.now().toString(),
-                        deadline,
+                        ...permitTransfer,
                         spender: HumanOracle.address,
                     },
                 ],
