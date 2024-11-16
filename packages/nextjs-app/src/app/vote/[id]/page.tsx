@@ -54,7 +54,7 @@ function convertData(input: unknown): Statement {
 
     return {
         statement: statement,
-        answers: answersWithStakes.concat(answersWithStakes).concat(answersWithStakes),
+        answers: answersWithStakes, //.concat(answersWithStakes).concat(answersWithStakes),
         totalStake: Number(totalStake),
     };
 }

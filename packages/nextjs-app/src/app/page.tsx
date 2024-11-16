@@ -2,33 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { waitOnTransaction } from "@/lib/miniKit";
 import { useContractContext } from "@/providers/contractProvider";
 import { Button } from "@nextui-org/button";
 import { MiniAppVerifyActionSuccessPayload, MiniKit, VerificationLevel } from "@worldcoin/minikit-js";
 import { decodeAbiParameters } from "viem";
-
-export interface TransactionStatus {
-    transactionHash: `0x${string}`;
-    transactionStatus: "pending" | "mined" | "failed";
-}
-async function waitOnTransaction(transactionId: string): Promise<TransactionStatus> {
-    while (true) {
-        try {
-            const response = await fetch(
-                `https://developer.worldcoin.org/api/v2/minikit/transaction/${transactionId}?app_id=${MiniKit.appId}&type=transaction`,
-            );
-            const data: TransactionStatus = await response.json();
-
-            if (data.transactionStatus === "mined" || data.transactionStatus === "failed") {
-                return data;
-            }
-
-            await new Promise<void>(resolve => setTimeout(resolve, 2000));
-        } catch (error) {
-            throw Error(`Error while waiting on transaction ${error}`);
-        }
-    }
-}
 
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
@@ -38,7 +16,7 @@ export default function LoginPage() {
     const onLoginSignup = async () => {
         setLoading(true);
 
-        // get wallet auth
+        /* ------------- Step 1: Authenticate with the World App Wallet ------------- */
         try {
             const res = await fetch(`/api/nonce`);
             const { nonce } = await res.json();
@@ -73,10 +51,11 @@ export default function LoginPage() {
             return;
         }
 
-        // check if registered and register if not
+        /* ------------------- Step 2: Check if user is registered ------------------ */
         try {
             const result = (await HumanOracle.read.isUserRegistered([MiniKit.walletAddress])) as boolean;
 
+            /* ------- Step 2.5: Verify user and register if he is not registered ------- */
             if (result == false) {
                 const verifyResult = await MiniKit.commandsAsync.verify({
                     action: "registration",
@@ -119,6 +98,8 @@ export default function LoginPage() {
                     throw Error("Error executing transaction");
                 }
                 router.replace("/statements");
+
+            /* -------------------- Step 2.5: Redirect if registered -------------------- */
             } else {
                 router.replace("/statements");
             }

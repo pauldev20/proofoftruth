@@ -4,10 +4,16 @@ import { ReactNode, useEffect, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
 import { MiniKit } from "@worldcoin/minikit-js";
 
+/* -------------------------------------------------------------------------- */
+/*                               CenterChildren                               */
+/* -------------------------------------------------------------------------- */
 function CenterChildren({ children }: { children: ReactNode }) {
     return <section className="h-screen w-screen flex items-center justify-center">{children}</section>;
 }
 
+/* -------------------------------------------------------------------------- */
+/*                               MiniKitProvider                              */
+/* -------------------------------------------------------------------------- */
 interface MiniKitProviderProps {
     children: ReactNode;
 }
