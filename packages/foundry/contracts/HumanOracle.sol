@@ -67,22 +67,23 @@ contract HumanOracle {
 	// external
 
 	function signUpWithWorldId(uint256 nullifierHash, uint256[8] calldata proof) external {
+		emit UserRegistered(address(msg.sender), nullifierHash, block.number);
 	}
 
 	function submitVotingDecisionWithStake(uint256 voteId, uint256 answerIndex, uint256 stake) external {
-
+		emit VoteSubmitted(address(msg.sender), voteId, answerIndex, stake);
 	}
 
 	function claimRewardForVote(uint256 voteId) external {
-
+		emit RewardClaimed(address(msg.sender), voteId, 10);
 	}
 
 	function isUserRegistered() external pure returns (bool) {
 		return true;
 	}
 
-	function createVote(string calldata question, string[] calldata answers, uint256 startingBlock, uint256 durationInBlocks) external {
-
+	function createVote(string calldata question, string[] calldata answers, uint256 startBlock, uint256 durationInBlocks) external {
+		emit VoteCreated(0, question, startBlock, durationInBlocks);
 	}
 
 	function getVotingPage(uint256 voteId) external pure returns (
