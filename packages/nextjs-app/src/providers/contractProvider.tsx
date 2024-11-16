@@ -17,7 +17,7 @@ import { worldchain } from "viem/chains";
 /*                               Initialization                               */
 /* -------------------------------------------------------------------------- */
 const chain = worldchain;
-const contractName = "HumanOracle";
+const contractName = "HumanOracleWithVault";
 const rpcUrl = "https://worldchain-mainnet.g.alchemy.com/public";
 
 const humanOracleAbi = deployedContracts[chain.id][contractName].abi;

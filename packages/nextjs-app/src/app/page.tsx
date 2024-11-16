@@ -8,6 +8,16 @@ import { useContractContext } from "@/providers/contractProvider";
 import { Button } from "@nextui-org/button";
 import { MiniAppVerifyActionSuccessPayload, MiniKit, VerificationLevel } from "@worldcoin/minikit-js";
 import { decodeAbiParameters } from "viem";
+import { ethers } from "ethers";
+
+const encodeWldData = (signal: string, merkleRoot: string, nullifierHash: string, proof: string): string => {
+	return new ethers.AbiCoder().encode(["address", "uint256", "uint256", "uint256[8]"], [
+		signal,
+		merkleRoot,
+		nullifierHash,
+		new ethers.AbiCoder().decode(["uint256[8]"], proof)[0]
+	]);
+}
 
 /* -------------------------------------------------------------------------- */
 /*                                    Page                                    */
