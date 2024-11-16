@@ -1,0 +1,35 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Contract
+    network: mainnet
+    source:
+      address: "0xe4d0116e9d6b5fc85a6ead0188d006b80a458b93"
+      abi: Contract
+      startBlock: 6200783
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - RewardClaimed
+        - UserRegistered
+        - VoteCreated
+        - VoteSubmitted
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: RewardClaimed(indexed address,indexed uint256,uint256)
+          handler: handleRewardClaimed
+        - event: UserRegistered(indexed address,uint256,uint256)
+          handler: handleUserRegistered
+        - event: VoteCreated(indexed uint256,string,uint256,uint256)
+          handler: handleVoteCreated
+        - event: VoteSubmitted(indexed address,indexed uint256,uint256,uint256)
+          handler: handleVoteSubmitted
+      file: ./src/contract.ts
