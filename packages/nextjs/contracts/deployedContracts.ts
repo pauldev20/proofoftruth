@@ -289,9 +289,35 @@ const deployedContracts = {
     },
   },
   480: {
-    MockHumanOracle: {
-      address: "0x5b48d6c49c2be6a0290bfc1756c700891861d3be",
+    HumanOracle: {
+      address: "0xd458ac0643add160a344b94b2dd165e6acb3bed5",
       abi: [
+        {
+          type: "constructor",
+          inputs: [
+            {
+              name: "_worldIdAddr",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "_groupId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "_appId",
+              type: "string",
+              internalType: "string",
+            },
+            {
+              name: "_action",
+              type: "string",
+              internalType: "string",
+            },
+          ],
+          stateMutability: "nonpayable",
+        },
         {
           type: "function",
           name: "claimRewardForVote",
@@ -302,7 +328,13 @@ const deployedContracts = {
               internalType: "uint256",
             },
           ],
-          outputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
           stateMutability: "nonpayable",
         },
         {
@@ -354,7 +386,7 @@ const deployedContracts = {
               internalType: "uint256[]",
             },
           ],
-          stateMutability: "pure",
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -388,7 +420,7 @@ const deployedContracts = {
               internalType: "uint256[]",
             },
           ],
-          stateMutability: "pure",
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -407,7 +439,7 @@ const deployedContracts = {
               internalType: "bool",
             },
           ],
-          stateMutability: "pure",
+          stateMutability: "view",
         },
         {
           type: "function",
@@ -434,6 +466,25 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "stakesForVoteIds",
+          inputs: [
+            {
+              name: "",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "totalStake",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "submitVotingDecisionWithStake",
           inputs: [
             {
@@ -447,13 +498,50 @@ const deployedContracts = {
               internalType: "uint256",
             },
             {
-              name: "stake",
+              name: "amount",
               type: "uint256",
               internalType: "uint256",
             },
           ],
           outputs: [],
           stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "users",
+          inputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "nullifierHash",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
+              name: "createdAtBlock",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "worldId",
+          inputs: [],
+          outputs: [
+            {
+              name: "",
+              type: "address",
+              internalType: "contract IWorldID",
+            },
+          ],
+          stateMutability: "view",
         },
         {
           type: "event",
