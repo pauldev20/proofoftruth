@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import {IWorldID} from "../lib/world-id-onchain-template/contracts/src/interfaces/IWorldID.sol";
+import {IWorldID} from "./IWorldID.sol";
 import {ByteHasher} from "./ByteHasher.sol";
 // import "forge-std/console.sol";
 
@@ -174,7 +174,7 @@ contract HumanOracle {
 		}
 	}
 
-	function createVote(string calldata question, string[] calldata answers, uint256 startBlock, uint256 durationInBlocks, uint256 bounty) external {
+	function createVote(string calldata question, string[] calldata answers, uint256 startBlock, uint256 durationInBlocks) external {
 		uint256 voteId = votes.length;
 		Vote memory newVote = Vote({
 			id: voteId,
@@ -185,7 +185,7 @@ contract HumanOracle {
 		});
 		votes.push(newVote);
 
-		createNewStake(voteId, bounty);
+		createNewStake(voteId);
 
 		emit VoteCreated(votes[voteId].id, votes[voteId].question, votes[voteId].startBlock, votes[voteId].durationInBlocks);
 	}
@@ -252,9 +252,8 @@ contract HumanOracle {
 	// internal
 
 	// stake related
-	function createNewStake(uint256 voteId, uint256 initialStake) internal {
+	function createNewStake(uint256 voteId) internal {
 		Stake storage newStake = stakesForVoteIds[voteId];
-		newStake.totalStake = initialStake;
 		uint256 answerCount = votes[voteId].answers.length;
 		for (uint i = 0; i < answerCount; i++) {
 			newStake.answers.push();

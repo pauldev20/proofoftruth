@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html suppressHydrationWarning lang="en">
             <head />
-            <body className={clsx("min-h-dvh bg-background touch-none", inter.className)}>
+            <body className={clsx("min-h-dvh text-foreground bg-background touch-none", inter.className)}>
                 <NextProviders themeProps={{ attribute: "class", defaultTheme: "light", enableSystem: false }}>
                     <ContractProvider>
                         <ErudaProvider>

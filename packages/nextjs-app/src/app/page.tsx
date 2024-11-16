@@ -112,8 +112,8 @@ export default function LoginPage() {
     };
 
     return (
-        <section className="h-dvh flex flex-col items-center justify-center">
-            <Button color="primary" isLoading={loading} radius="sm" onClick={onLoginSignup}>
+        <section className="h-dvh flex flex-col items-center justify-end p-6">
+            <Button fullWidth color="primary" isLoading={loading} radius="sm" onClick={onLoginSignup}>
                 Sign In / Sign Up
             </Button>
         </section>
