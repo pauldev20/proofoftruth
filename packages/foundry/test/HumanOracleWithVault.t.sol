@@ -1,11 +1,12 @@
-// SPDX-License-Identifier: UNLICENSED
+// // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
 
 import "../lib/solmate/src/tokens/ERC20.sol";
 import "../contracts/Permit2Vault.sol";
+import "../contracts/HumanOracleWithVault.sol";
 import "./TestUtils.sol";
 
-contract Permit2VaultTest is TestUtils {
+contract HumanOracleWithVaultTest is TestUtils {
     bytes32 constant TOKEN_PERMISSIONS_TYPEHASH =
         keccak256("TokenPermissions(address token,uint256 amount)");
     bytes32 constant PERMIT_TRANSFER_FROM_TYPEHASH = keccak256(
@@ -19,7 +20,7 @@ contract Permit2VaultTest is TestUtils {
     TestERC20 token1 = new TestERC20();
     TestERC20 token2 = new TestERC20();
     ReenteringERC20 badToken = new ReenteringERC20();
-    Permit2Vault vault;
+    HumanOracleWithVault vault;
     uint256 ownerKey;
     address owner;
 
@@ -27,7 +28,7 @@ contract Permit2VaultTest is TestUtils {
         vm.chainId(1);
         ownerKey = _randomUint256();
         owner = vm.addr(ownerKey);
-        vault = new Permit2Vault(address(permit2), owner);
+        vault = new HumanOracleWithVault(address(0), 0, string(""), string(""), address(permit2), owner);
         // Set up unlimited token approvals from the user onto the permit2 contract.
         vm.prank(owner);
         token1.approve(address(permit2), type(uint256).max);

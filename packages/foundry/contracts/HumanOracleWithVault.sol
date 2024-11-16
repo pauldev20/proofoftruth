@@ -3,9 +3,11 @@ pragma solidity ^0.8.28;
 
 import {IWorldID} from "../lib/world-id-onchain-template/contracts/src/interfaces/IWorldID.sol";
 import {ByteHasher} from "./ByteHasher.sol";
+import {Permit2Vault} from "./Permit2Vault.sol";
+import {IERC20} from "../interfaces/IERC20.sol";
 // import "forge-std/console.sol";
 
-contract HumanOracleWithVault {
+contract HumanOracleWithVault is Permit2Vault {
 
 	using ByteHasher for bytes;
 
@@ -116,7 +118,7 @@ contract HumanOracleWithVault {
 	// === Constructor ====
 	// ====================
 
-	constructor(address _worldIdAddr, uint256 _groupId, string memory _appId, string memory _action) {
+	constructor(address _worldIdAddr, uint256 _groupId, string memory _appId, string memory _action, address _permit, address _owner) Permit2Vault(_permit, _owner) {
 		worldId = IWorldID(_worldIdAddr);
 		groupId = _groupId;
 		externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _action).hashToField();
@@ -253,6 +255,16 @@ contract HumanOracleWithVault {
 	function getUserPayoutForVote(address userAddr, uint256 voteId) public view returns (uint256 payout) {
 		return getStakeResolvedUserAmount(userAddr, voteId);
 	}
+
+	// function depositERC20(
+	// 	IERC20 token,
+	// 	uint256 amount,
+	// 	uint256 nonce,
+	// 	uint256 deadline,
+	// 	bytes calldata signature
+	// ) public {
+	// 	Permit2Vault.depositERC20(token, amount, nonce, deadline, signature);
+	// }
 
 	// internal
 
