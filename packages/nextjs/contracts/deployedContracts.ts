@@ -290,7 +290,7 @@ const deployedContracts = {
   },
   480: {
     HumanOracle: {
-      address: "0x909ebe9c98afa1a685603584ed2eea91a20d5311",
+      address: "0xaacd5df051fe64da91422a0a2bf4f99a14732bda",
       abi: [
         {
           type: "constructor",
@@ -369,6 +369,30 @@ const deployedContracts = {
           ],
           outputs: [],
           stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "getUserPayoutForVote",
+          inputs: [
+            {
+              name: "userAddr",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "voteId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "payout",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          stateMutability: "view",
         },
         {
           type: "function",
