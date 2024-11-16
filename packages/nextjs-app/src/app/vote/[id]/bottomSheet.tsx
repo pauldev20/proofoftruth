@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { waitOnTransaction } from "@/lib/miniKit";
 import { useContractContext } from "@/providers/contractProvider";
 import { Button } from "@nextui-org/button";
@@ -17,8 +17,27 @@ interface BottomSheetProps {
     id: number;
 }
 export default function BottomSheet({ selected, loading, setLoading, data, id }: BottomSheetProps) {
+    const [stateStr, setStateStr] = useState("ongoing");
     const [stakeFactor, setStakeFactor] = useState(1);
     const { HumanOracle } = useContractContext();
+
+    useEffect(() => {
+        (async () => {
+            const over = (await HumanOracle.read.isVotingOver([id])) as boolean;
+            const voted = (await HumanOracle.read.hasUserVotedForVote([id])) as boolean;
+            const claimed = (await HumanOracle.read.getUserHasClaimedForVote([id])) as boolean;
+
+            if (!over && !voted) {
+                setStateStr("ongoing");
+            } else if (!over && voted) {
+                setStateStr("voted");
+            } else if (over && !claimed) {
+                setStateStr("claimable");
+            } else if (over && claimed) {
+                setStateStr("claimed");
+            }
+        })();
+    }, []);
 
     const handleVote = async () => {
         if (!selected || !data) return;
@@ -91,24 +110,24 @@ export default function BottomSheet({ selected, loading, setLoading, data, id }:
             className="w-full flex flex-col items-center gap-2 p-3 py-7 mt-auto rounded-t-2xl"
             style={{ boxShadow: "0 -4px 6px -2px rgba(0, 0, 0, 0.1)" }}
         >
-            {true && (
-                <Button fullWidth color="primary" disabled={loading} onClick={handleClaim}>
-                    Claim Reward
-                </Button>
-            )}
-            {false && (
+            {stateStr == "claimed" && (
                 <div className="flex flex-row gap-1 items-center">
                     <h1 className="text-xl">No reward to claim</h1>
                     <ExclamationCircleIcon className="size-8 text-yellow-500" />
                 </div>
             )}
-            {false && (
+            {stateStr == "voted" && (
                 <div className="flex flex-row gap-1 items-center">
                     <h1 className="text-xl">You submitted a vote</h1>
                     <CheckIcon className="size-10 text-green-500" />
                 </div>
             )}
-            {false && (
+            {stateStr == "claimable" && (
+                <Button fullWidth color="primary" disabled={loading} onClick={handleClaim}>
+                    Claim Reward
+                </Button>
+            )}
+            {stateStr == "ongoing" && (
                 <>
                     <Slider
                         size="md"
