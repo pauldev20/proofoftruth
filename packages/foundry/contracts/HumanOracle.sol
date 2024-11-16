@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-import { IDKitWidget } from '@worldcoin/idkit';
+import {IWorldID} from "../lib/world-id-onchain-template/contracts/src/interfaces/IWorldID.sol";
 // import "forge-std/console.sol";
 
 contract HumanOracle {
@@ -42,7 +42,8 @@ contract HumanOracle {
 	Vote[] votes;
 
 	// private
-	mapping (uint256 => bool) private nullifierHashes;
+	mapping (uint256 => bool) private registeredNullifierHashes;
+	uint256 internal immutable groupId = 1;
 
 	// ====================
 	// ====== Events ======
@@ -106,8 +107,8 @@ contract HumanOracle {
 	// === Constructor ====
 	// ====================
 
-	constructor(address worldIdRouterAddr) public {
-
+	constructor(address _worldId, uint256 _groupId) public {
+		groupId = _groupId;
 	}
 
 	// ====================
@@ -119,7 +120,7 @@ contract HumanOracle {
 	function signUpWithWorldId(uint256 merkleRoot, uint256 nullifierHash, uint256[8] calldata proof) onlyNewUser() external {
 		address userAddr = address(msg.sender);
 
-		if (nullifierHashes[nullifierHash] == true) {
+		if (registeredNullifierHashes[nullifierHash] == true) {
 			revert ("nullifierHash already existing");
 		}
 		worldIdRouter.verifyProof(
@@ -130,7 +131,7 @@ contract HumanOracle {
 			externalNullifierHash,
 			proof
 		);
-		nullifierHashes[nullifierHash] = true;
+		registeredNullifierHashes[nullifierHash] = true;
 
 		User memory newUser = User({
 			nullifierHash: nullifierHash,
