@@ -68,7 +68,7 @@ export default function LoginPage() {
                 }
                 const verifySuccessResult = verifyResult.finalPayload as MiniAppVerifyActionSuccessPayload;
 
-                await new Promise(res => setTimeout(res, 3500)); // because of app bug
+                await new Promise(res => setTimeout(res, 4000)); // because of app bug
 
                 const transactionResult = await MiniKit.commandsAsync.sendTransaction({
                     transaction: [
@@ -87,6 +87,8 @@ export default function LoginPage() {
                         },
                     ],
                 });
+
+                console.log(transactionResult, HumanOracle.address, HumanOracle.abi);
 
                 if (transactionResult.finalPayload.status === "error") {
                     throw new Error("Error in submitting transaction");
@@ -112,7 +114,7 @@ export default function LoginPage() {
     };
 
     return (
-        <section className="h-dvh flex flex-col items-center justify-end p-6">
+        <section className="h-dvh flex flex-col items-center justify-end p-9">
             <Button fullWidth color="primary" isLoading={loading} radius="sm" onClick={onLoginSignup}>
                 Sign In / Sign Up
             </Button>

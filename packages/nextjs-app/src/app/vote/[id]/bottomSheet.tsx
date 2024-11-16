@@ -24,8 +24,8 @@ export default function BottomSheet({ selected, loading, setLoading, data, id }:
     useEffect(() => {
         (async () => {
             const over = (await HumanOracle.read.isVotingOver([id])) as boolean;
-            const voted = (await HumanOracle.read.hasUserVotedForVote([id])) as boolean;
-            const claimed = (await HumanOracle.read.getUserHasClaimedForVote([id])) as boolean;
+            const voted = (await HumanOracle.read.hasUserVotedForVote([MiniKit.walletAddress, id])) as boolean;
+            const claimed = (await HumanOracle.read.hasUserClaimedForVote([MiniKit.walletAddress, id])) as boolean;
 
             if (!over && !voted) {
                 setStateStr("ongoing");
