@@ -7,11 +7,11 @@ import { Button } from "@nextui-org/button";
 import {
     MiniAppSendTransactionPayload,
     MiniAppVerifyActionPayload,
+    MiniAppVerifyActionSuccessPayload,
     MiniKit,
     ResponseEvent,
     VerificationLevel,
 } from "@worldcoin/minikit-js";
-// import { useWaitForTransactionReceipt } from "@worldcoin/minikit-js/hooks";
 import { createPublicClient, decodeAbiParameters, getContract, hexToBigInt, http, stringToHex } from "viem";
 import { worldchain } from "viem/chains";
 
@@ -38,6 +38,7 @@ const subscribeToWalletAuth = async (nonce: string) => {
                     }
 
                     const responseData = await response.json();
+
                     resolve(responseData);
                 } catch (error) {
                     reject(error);
@@ -61,7 +62,7 @@ const subscribeToTransaction = async (): Promise<string> => {
     });
 };
 
-const subscribeToVerifyAction = async (): Promise<MiniAppVerifyActionPayload> => {
+const subscribeToVerifyAction = async (): Promise<MiniAppVerifyActionSuccessPayload> => {
     return new Promise((resolve, reject) => {
         MiniKit.subscribe(ResponseEvent.MiniAppVerifyAction, async (response: MiniAppVerifyActionPayload) => {
             if (response.status === "error") {
@@ -69,7 +70,7 @@ const subscribeToVerifyAction = async (): Promise<MiniAppVerifyActionPayload> =>
 
                 return reject(new Error("Error in MiniAppVerifyAction payload"));
             }
-            resolve(response);
+            resolve(response as MiniAppVerifyActionSuccessPayload);
         });
     });
 };
@@ -86,7 +87,7 @@ export default function LoginPage() {
             transport: http("https://worldchain-mainnet.g.alchemy.com/public"),
         });
         const HumanOrcale = getContract({
-            address: deployedContracts[worldchain.id].MockHumanOracle.address,
+            address: deployedContracts[worldchain.id].MockHumanOracle.address as `0x${string}`,
             abi: deployedContracts[worldchain.id].MockHumanOracle.abi,
             client,
         });
@@ -116,18 +117,18 @@ export default function LoginPage() {
 
         // check if registered and register if not
         try {
-            const result = await HumanOrcale.read.isUserRegistered(MiniKit.walletAddress);
+            const result = await HumanOrcale.read.isUserRegistered([MiniKit.walletAddress]);
 
             console.log(result);
-            if (result == false) {
-                const verify = MiniKit.commands.verify({
+            if (true || result == false) {
+                MiniKit.commands.verify({
                     action: "registration",
                     signal: MiniKit.walletAddress!,
                     verification_level: VerificationLevel.Orb,
                 });
                 const verifyResult = await subscribeToVerifyAction();
 
-                console.log(verify);
+                console.log(verifyResult);
                 const transactionPayload = MiniKit.commands.sendTransaction({
                     transaction: [
                         {
@@ -135,9 +136,9 @@ export default function LoginPage() {
                             abi: deployedContracts[worldchain.id].MockHumanOracle.abi,
                             functionName: "signUpWithWorldId",
                             args: [
-                                hexToBigInt(stringToHex(verifyResult.merkle_root, { size: 32 })),
-                                hexToBigInt(stringToHex(verifyResult.nullifier_hash, { size: 32 })),
-                                decodeAbiParameters([{ type: "uint256[8]" }], verifyResult.proof)[0],
+                                hexToBigInt(verifyResult.merkle_root as `0x${string}`),
+                                hexToBigInt(verifyResult.nullifier_hash as `0x${string}`),
+                                decodeAbiParameters([{ type: "uint256[8]" }], verifyResult.proof as `0x${string}`)[0],
                             ],
                         },
                     ],
@@ -160,13 +161,14 @@ export default function LoginPage() {
         } catch (error) {
             console.error(error);
             setLoading(false);
+
             return;
         }
     };
 
     return (
         <section className="h-dvh flex flex-col items-center justify-center">
-            <Button color="primary" radius="sm" onClick={onLoginSignup} isLoading={loading}>
+            <Button color="primary" isLoading={loading} radius="sm" onClick={onLoginSignup}>
                 Sign In / Sign Up
             </Button>
         </section>
