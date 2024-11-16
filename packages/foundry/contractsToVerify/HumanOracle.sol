@@ -174,7 +174,7 @@ contract HumanOracle {
 		}
 	}
 
-	function createVote(string calldata question, string[] calldata answers, uint256 startBlock, uint256 durationInBlocks) external {
+	function createVote(string calldata question, string[] calldata answers, uint256 startBlock, uint256 durationInBlocks, uint256 bounty) external {
 		uint256 voteId = votes.length;
 		Vote memory newVote = Vote({
 			id: voteId,
@@ -185,7 +185,7 @@ contract HumanOracle {
 		});
 		votes.push(newVote);
 
-		createNewStake(voteId);
+		createNewStake(voteId, bounty);
 
 		emit VoteCreated(votes[voteId].id, votes[voteId].question, votes[voteId].startBlock, votes[voteId].durationInBlocks);
 	}
@@ -245,15 +245,16 @@ contract HumanOracle {
 		return false;
 	}
 
-	function getUserHasClaimedForVote(address userAddr, uint256 voteId) external view returns (bool) {
+	function hasUserClaimedForVote(address userAddr, uint256 voteId) external view returns (bool) {
 		return stakesForVoteIds[voteId].hasUserClaimed[userAddr];
 	}
 
 	// internal
 
 	// stake related
-	function createNewStake(uint256 voteId) internal {
+	function createNewStake(uint256 voteId, uint256 initialStake) internal {
 		Stake storage newStake = stakesForVoteIds[voteId];
+		newStake.totalStake = initialStake;
 		uint256 answerCount = votes[voteId].answers.length;
 		for (uint i = 0; i < answerCount; i++) {
 			newStake.answers.push();

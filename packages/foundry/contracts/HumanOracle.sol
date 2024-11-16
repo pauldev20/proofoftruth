@@ -245,7 +245,7 @@ contract HumanOracle {
 		return false;
 	}
 
-	function getUserHasClaimedForVote(address userAddr, uint256 voteId) external view returns (bool) {
+	function hasUserClaimedForVote(address userAddr, uint256 voteId) external view returns (bool) {
 		return stakesForVoteIds[voteId].hasUserClaimed[userAddr];
 	}
 
