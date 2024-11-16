@@ -8,7 +8,7 @@ contract DeployHumanOracle is ScaffoldETHDeploy {
 
   address public worldIdAddr = 0x17B354dD2595411ff79041f930e491A4Df39A278;
   uint256 public groupId = 1;
-  string public appId = "app_485be80eb191bba1e603c1aeb6743660";
+  string public appId = "app_22ea9fb73d53333c2997e8f16e60cc6b";
   string public action = "registration";
 
   function run() external ScaffoldEthDeployerRunner {
