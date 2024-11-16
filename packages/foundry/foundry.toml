@@ -32,6 +32,8 @@ worldSepolia = "https://worldchain-sepolia.gateway.tenderly.co"
 [etherscan]
 polygonMumbai = { key = "${ETHERSCAN_API_KEY}" }
 sepolia = { key = "${ETHERSCAN_API_KEY}" }
+world = { key = "${WORLDSCAN_API_KEY}" }
+worldSepolia = { key = "${WORLDSCAN_API_KEY}" }
 
 
 [fmt]
