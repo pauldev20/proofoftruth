@@ -11,11 +11,11 @@ contract DeployScript is ScaffoldETHDeploy {
     // DeployMockHumanOracle deployMockHumanOracle = new DeployMockHumanOracle();
     // deployMockHumanOracle.run();
 
-    // DeployHumanOracle deployHumanOracle = new DeployHumanOracle();
-    // deployHumanOracle.run();
+    DeployHumanOracle deployHumanOracle = new DeployHumanOracle();
+    deployHumanOracle.run();
 
-    DeployHumanOracleWithVault deployHumanOracleWithVault = new DeployHumanOracleWithVault();
-    deployHumanOracleWithVault.run();
+    // DeployHumanOracleWithVault deployHumanOracleWithVault = new DeployHumanOracleWithVault();
+    // deployHumanOracleWithVault.run();
   
     // deploy more contracts here
     // DeployMyContract deployMyContract = new DeployMyContract();
