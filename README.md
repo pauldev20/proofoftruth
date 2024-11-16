@@ -5,6 +5,8 @@
   <a href="https://scaffoldeth.io">Website</a>
 </h4>
 
+graph init --from-contract 0x5B48d6C49c2BE6A0290BfC1756c700891861d3be --network mainnet --abi 
+
 🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
 
 ⚙️ Built using NextJS, RainbowKit, Foundry, Wagmi, Viem, and Typescript.

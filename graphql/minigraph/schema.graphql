@@ -1,0 +1,41 @@
+type RewardClaimed @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  voteId: BigInt! # uint256
+  rewardAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UserRegistered @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  nullifierHash: BigInt! # uint256
+  createdAtBlock: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VoteCreated @entity(immutable: true) {
+  id: Bytes!
+  voteId: BigInt! # uint256
+  question: String! # string
+  startBlock: BigInt! # uint256
+  durationInBlocks: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type VoteSubmitted @entity(immutable: true) {
+  id: Bytes!
+  user: Bytes! # address
+  voteId: BigInt! # uint256
+  answerIndex: BigInt! # uint256
+  stakeAmount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
