@@ -90,7 +90,7 @@ export default function VotePage({ params }: VotePageProps) {
 
     /* --------------- Fetch the statement data from the contract --------------- */
     const fetchStatementData = async () => {
-        setData(null);
+        // setData(null);
         const dataResult = convertData(await HumanOracle.read.getVotingPage([Number(params.id)]));
 
         const over = (await HumanOracle.read.isVotingOver([Number(params.id)])) as boolean;
@@ -102,10 +102,9 @@ export default function VotePage({ params }: VotePageProps) {
             MiniKit.walletAddress,
             Number(params.id),
         ])) as boolean;
-        const payoutAmount = (await HumanOracle.read.getUserPayoutForVote([
-            MiniKit.walletAddress,
-            Number(params.id),
-        ])) as boolean;
+        const payoutAmount = Number(
+            await HumanOracle.read.getUserPayoutForVote([MiniKit.walletAddress, Number(params.id)]),
+        );
 
         setData({
             ...dataResult,
@@ -156,11 +155,21 @@ export default function VotePage({ params }: VotePageProps) {
             </div>
 
             {/* Answers */}
-            <RadioGroup className="w-full px-2" isDisabled={loading} value={selected} onValueChange={setSelected}>
+            <RadioGroup
+                className="w-full px-2"
+                isDisabled={loading || data.over || data.voted}
+                value={selected}
+                onValueChange={setSelected}
+            >
                 <ScrollShadow hideScrollBar className="w-full gap-3 grid py-5 px-3">
                     {data.answers.map((answer, index) => (
                         <CustomRadio key={index} value={answer.answer}>
-                            {answer.answer}
+                            <div className="flex flex-col">
+                                <p>{answer.answer}</p>
+                                <p className="text-xs opacity-50">
+                                    {answer.stake} <span className="font-bold">WLD</span>
+                                </p>
+                            </div>
                         </CustomRadio>
                     ))}
                 </ScrollShadow>

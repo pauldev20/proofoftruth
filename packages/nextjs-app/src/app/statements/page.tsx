@@ -28,6 +28,7 @@ type Statement = {
 export default function HomePage() {
     const [statements, setStatements] = useState<Statement[] | null>(null);
     const [search, setSearch] = useState<string>("");
+    const [loading, setLoading] = useState(false);
     const { HumanOracle } = useContractContext();
     const router = useRouter();
 
@@ -61,7 +62,7 @@ export default function HomePage() {
     }, [statements, search]);
 
     /* ----------------------- If loading, show a spinner ----------------------- */
-    if (!statements) {
+    if (!statements || loading) {
         return (
             <section className="h-dvh flex flex-col items-center justify-center">
                 <Spinner size="lg" />
@@ -97,7 +98,10 @@ export default function HomePage() {
                             key={event.id}
                             amount={event.totalStake}
                             title={event.statement}
-                            onClick={() => router.push(`/vote/${event.id}`)}
+                            onClick={() => {
+                                setLoading(true);
+                                router.push(`/vote/${event.id}`);
+                            }}
                         />
                     ))
                 ) : (

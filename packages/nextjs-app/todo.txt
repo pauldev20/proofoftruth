@@ -1,2 +1,3 @@
 - add toasts for errors (from top?)
 - walletAuth automatic signin
+- loading for page changes

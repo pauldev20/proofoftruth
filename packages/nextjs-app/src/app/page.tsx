@@ -92,6 +92,8 @@ export default function LoginPage() {
                     ],
                 });
 
+                console.log(transactionResult);
+
                 if (transactionResult.finalPayload.status === "error") {
                     throw new Error("Error in submitting transaction");
                 }
@@ -116,7 +118,7 @@ export default function LoginPage() {
     };
 
     return (
-        <section className="h-dvh flex flex-col items-center justify-between p-14">
+        <section className="h-dvh flex flex-col items-center justify-between py-14 px-3">
             {/* Logo Image */}
             <div className="flex flex-col items-center justify-center h-full">
                 <Image alt="Logo" src="/logo.svg" width={250} height={250} />
@@ -124,7 +126,7 @@ export default function LoginPage() {
 
             {/* Sign In / Sign Up Button */}
             <div className="w-full">
-                <Button fullWidth color="primary" isLoading={loading} radius="sm" onClick={onLoginSignup}>
+                <Button fullWidth color="primary" isLoading={loading} radius="sm" size="lg" onClick={onLoginSignup}>
                     Sign In / Sign Up
                 </Button>
             </div>
