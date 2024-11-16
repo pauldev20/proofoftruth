@@ -3,10 +3,11 @@ pragma solidity ^0.8.28;
 
 import {IWorldID} from "../lib/world-id-onchain-template/contracts/src/interfaces/IWorldID.sol";
 import {WorldIdRegister} from "./WorldIdRegister.sol";
+import {Permit2Vault} from "./Permit2Vault.sol";
 import {ByteHasher} from "./ByteHasher.sol";
 // import "forge-std/console.sol";
 
-contract HumanOracleWithWorldIdRegister is WorldIdRegister {
+contract HumanOracleV1 is WorldIdRegister, Permit2Vault {
 
 	// ====================
 	// ====== Structs =====
@@ -99,7 +100,7 @@ contract HumanOracleWithWorldIdRegister is WorldIdRegister {
 	// === Constructor ====
 	// ====================
 
-	constructor(address _worldIdAddr, uint256 _groupId, string memory _appId, string memory _action) WorldIdRegister(_worldIdAddr, _groupId, _appId, _action) {
+	constructor(address _worldIdAddr, uint256 _groupId, string memory _appId, string memory _action, address _permit, address _owner) WorldIdRegister(_worldIdAddr, _groupId, _appId, _action) Permit2Vault(_permit, _owner) {
 	}
 
 	// ====================
