@@ -2,7 +2,7 @@
 pragma solidity ^0.8.28;
 
 // Useful for debugging. Remove when deploying to a live network.
-// import "forge-std/console.sol";
+import "forge-std/console.sol";
 
 contract MockHumanOracle {
 	// ====================
@@ -132,14 +132,14 @@ contract MockHumanOracle {
 		string[] memory questions,
 		uint256[] memory totalStakes
 	) {
-		uint256 numberOfVotes = 2;	
+		uint256 numberOfVotes = 2;
 		ids = new uint256[](numberOfVotes);
 		questions = new string[](numberOfVotes);
-		totalStakes = new uint256[](numberOfVotes);	
+		totalStakes = new uint256[](numberOfVotes);
 
 		ids[0] = 1;
 		questions[0] = "What is your favorite blockchain?";
-		totalStakes[0] = 1000;	
+		totalStakes[0] = 1000;
 
 		ids[1] = 2;
 		questions[1] = "Which DeFi project do you trust the most?";
