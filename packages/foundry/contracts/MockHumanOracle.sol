@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity >=0.8.28;
 
 // Useful for debugging. Remove when deploying to a live network.
 // import "forge-std/console.sol";
@@ -66,7 +66,7 @@ contract MockHumanOracle {
 
 	// external
 
-	function signUpWithWorldId(uint256 nullifierHash, uint256[8] calldata proof) external {
+	function signUpWithWorldId(uint256 merkleRoot, uint256 nullifierHash, uint256[8] calldata proof) external {
 		emit UserRegistered(address(msg.sender), nullifierHash, block.number);
 	}
 

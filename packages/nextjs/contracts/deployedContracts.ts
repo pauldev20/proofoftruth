@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   480: {
     MockHumanOracle: {
-      address: "0xae75340eafce2b8b7740b3f731743f35b3c541e5",
+      address: "0xe4d0116e9d6b5fc85a6ead0188d006b80a458b93",
       abi: [
         {
           type: "function",
@@ -130,6 +130,11 @@ const deployedContracts = {
           type: "function",
           name: "signUpWithWorldId",
           inputs: [
+            {
+              name: "merkleRoot",
+              type: "uint256",
+              internalType: "uint256",
+            },
             {
               name: "nullifierHash",
               type: "uint256",
@@ -409,6 +414,11 @@ const deployedContracts = {
           name: "signUpWithWorldId",
           inputs: [
             {
+              name: "merkleRoot",
+              type: "uint256",
+              internalType: "uint256",
+            },
+            {
               name: "nullifierHash",
               type: "uint256",
               internalType: "uint256",
@@ -686,6 +696,11 @@ const deployedContracts = {
           type: "function",
           name: "signUpWithWorldId",
           inputs: [
+            {
+              name: "merkleRoot",
+              type: "uint256",
+              internalType: "uint256",
+            },
             {
               name: "nullifierHash",
               type: "uint256",
