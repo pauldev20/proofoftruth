@@ -33,7 +33,7 @@ export default function HomePage() {
     const [results, setResults] = useState([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
 
     return (
-        <section className="h-screen flex flex-col items-center">
+        <section className="h-dvh flex flex-col items-center">
             <Navbar
                 startContent={<AddressComponent address="vitalik.eth" />}
                 endContent={<TotalPayout total={100} />}

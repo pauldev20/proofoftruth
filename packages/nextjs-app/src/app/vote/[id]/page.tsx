@@ -24,7 +24,7 @@ export default function VotePage({ params }: VotePageProps) {
     const router = useRouter();
 
     return (
-        <section className="h-screen flex flex-col items-center">
+        <section className="h-dvh flex flex-col items-center">
             <Navbar
                 startContent={
                     <IconButton icon={<ChevronLeftIcon className="size-7" onClick={() => router.back()} />} />

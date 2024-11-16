@@ -146,6 +146,19 @@ function main() {
       }
     )
   );
+
+  if (!existsSync("../nextjs-app/contracts/")) {
+    mkdirSync("../nextjs-app/contracts/");
+  }
+  writeFileSync(
+    `../nextjs-app/contracts/deployedContracts.ts`,
+	format(
+	  `${generatedContractComment} \n\nconst deployedContracts = {${fileContent}} as const;\n`,
+	  {
+		parser: "typescript",
+	  }
+	)
+  );
 }
 
 try {
