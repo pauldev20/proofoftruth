@@ -1,4 +1,17 @@
-type RewardClaimed @entity(immutable: true) {
+enum VoteStatus {
+  OPEN
+  CLOSED
+  PENDING
+}
+
+interface BlockchainEvent {
+  id: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RewardClaimed implements BlockchainEvent @entity(immutable: true) {
   id: Bytes!
   user: Bytes! # address
   voteId: BigInt! # uint256
@@ -8,7 +21,7 @@ type RewardClaimed @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type UserRegistered @entity(immutable: true) {
+type UserRegistered implements BlockchainEvent @entity(immutable: true) {
   id: Bytes!
   user: Bytes! # address
   nullifierHash: BigInt! # uint256
@@ -18,18 +31,19 @@ type UserRegistered @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type VoteCreated @entity(immutable: true) {
+type VoteCreated implements BlockchainEvent @entity(immutable: true) {
   id: Bytes!
   voteId: BigInt! # uint256
   question: String! # string
   startBlock: BigInt! # uint256
   durationInBlocks: BigInt! # uint256
+  status: VoteStatus! # Enum for vote status
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
 
-type VoteSubmitted @entity(immutable: true) {
+type VoteSubmitted implements BlockchainEvent @entity(immutable: true) {
   id: Bytes!
   user: Bytes! # address
   voteId: BigInt! # uint256
@@ -38,4 +52,11 @@ type VoteSubmitted @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+}
+
+type DailyAggregations @entity {
+  id: String! # Format: "YYYY-MM-DD"
+  totalVotes: BigInt!
+  totalRewards: BigInt!
+  totalUsers: BigInt!
 }
