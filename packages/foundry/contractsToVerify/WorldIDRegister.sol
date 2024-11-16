@@ -5,7 +5,7 @@ import {IWorldID} from "./IWorldID.sol";
 import {ByteHasher} from "./ByteHasher.sol";
 // import "forge-std/console.sol";
 
-contract WorldIDRegister {
+contract WorldIdRegister {
 
 	using ByteHasher for bytes;
 

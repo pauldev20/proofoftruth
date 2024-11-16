@@ -1,10 +1,11 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
+import {IWorldID} from "./IWorldID.sol";
 import {WorldIdRegister} from "./WorldIdRegister.sol";
 import {Permit2Vault} from "./Permit2Vault.sol";
 import {ByteHasher} from "./ByteHasher.sol";
-import {IERC20} from "../interfaces/IERC20.sol";
+import {IERC20} from "./IERC20.sol";
 // import "forge-std/console.sol";
 
 contract HumanOracleV1 is WorldIdRegister {

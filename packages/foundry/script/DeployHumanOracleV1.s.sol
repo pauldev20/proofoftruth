@@ -15,7 +15,8 @@ contract DeployHumanOracleV1 is ScaffoldETHDeploy {
   address public owner = 0x4639B9F663C14Bad89Ddcc16966e85Bc81dCCD40;
 
   function run() external ScaffoldEthDeployerRunner {
-    HumanOracleV1 humanOracle = new HumanOracleV1(worldIdAddr, groupId, appId, action, permit, owner);
+    Permit2Vault vault = new Permit2Vault(permit, owner);
+    HumanOracleV1 humanOracle = new HumanOracleV1(worldIdAddr, groupId, appId, action, worldToken, address(vault));
     console.logString(
       string.concat(
         "HumanOracleWithWorldIdRegister deployed at: ", vm.toString(address(humanOracle))
