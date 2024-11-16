@@ -798,7 +798,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@heroicons/react@npm:~2.1.5":
+"@heroicons/react@npm:^2.1.5, @heroicons/react@npm:~2.1.5":
   version: 2.1.5
   resolution: "@heroicons/react@npm:2.1.5"
   peerDependencies:
@@ -1495,6 +1495,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nextui-org/card@npm:^2.0.34":
+  version: 2.0.34
+  resolution: "@nextui-org/card@npm:2.0.34"
+  dependencies:
+    "@nextui-org/react-utils": 2.0.17
+    "@nextui-org/ripple": 2.0.33
+    "@nextui-org/shared-utils": 2.0.8
+    "@nextui-org/use-aria-button": 2.0.10
+    "@react-aria/button": 3.9.5
+    "@react-aria/focus": 3.17.1
+    "@react-aria/interactions": 3.21.3
+    "@react-aria/utils": 3.24.1
+    "@react-types/shared": 3.23.1
+  peerDependencies:
+    "@nextui-org/system": ">=2.0.0"
+    "@nextui-org/theme": ">=2.1.0"
+    framer-motion: ">=10.17.0"
+    react: ">=18"
+    react-dom: ">=18"
+  checksum: 8aa569d89b120d5a186ade16b56b97a0e551df740b4337b5cfa93d43890b341be8a9f007860ee03b76625fdc1defe50b00d836a21b4628a2192c4035efb9c7aa
+  languageName: node
+  linkType: hard
+
 "@nextui-org/code@npm:2.0.33":
   version: 2.0.33
   resolution: "@nextui-org/code@npm:2.0.33"
@@ -1654,6 +1677,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nextui-org/radio@npm:^2.1.5":
+  version: 2.1.5
+  resolution: "@nextui-org/radio@npm:2.1.5"
+  dependencies:
+    "@nextui-org/react-utils": 2.0.17
+    "@nextui-org/shared-utils": 2.0.8
+    "@react-aria/focus": 3.17.1
+    "@react-aria/interactions": 3.21.3
+    "@react-aria/radio": 3.10.4
+    "@react-aria/utils": 3.24.1
+    "@react-aria/visually-hidden": 3.8.12
+    "@react-stately/radio": 3.10.4
+    "@react-types/radio": 3.8.1
+    "@react-types/shared": 3.23.1
+  peerDependencies:
+    "@nextui-org/system": ">=2.0.0"
+    "@nextui-org/theme": ">=2.1.0"
+    react: ">=18"
+    react-dom: ">=18"
+  checksum: 455d393e6b1484c26fbf5b98ab84f7dc5cdfcaddb13ea60cf5193c1ebdbcd790f6178825141d0d786a3e6014310552ad8dfef488fa77102cb1c759d4bfc07e08
+  languageName: node
+  linkType: hard
+
 "@nextui-org/react-rsc-utils@npm:2.0.14":
   version: 2.0.14
   resolution: "@nextui-org/react-rsc-utils@npm:2.0.14"
@@ -1691,6 +1737,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nextui-org/scroll-shadow@npm:^2.1.20":
+  version: 2.1.20
+  resolution: "@nextui-org/scroll-shadow@npm:2.1.20"
+  dependencies:
+    "@nextui-org/react-utils": 2.0.17
+    "@nextui-org/shared-utils": 2.0.8
+    "@nextui-org/use-data-scroll-overflow": 2.1.7
+  peerDependencies:
+    "@nextui-org/system": ">=2.0.0"
+    "@nextui-org/theme": ">=2.1.0"
+    react: ">=18"
+    react-dom: ">=18"
+  checksum: 9cc73d1d2984277c18fbbdcb57ea6c8ff82769b85df7425b8618bb632099d61a8998691eb6aef611b29dda97001432ef3ae5cb030a42ad4ff00efdf233bda755
+  languageName: node
+  linkType: hard
+
 "@nextui-org/shared-icons@npm:2.0.9":
   version: 2.0.9
   resolution: "@nextui-org/shared-icons@npm:2.0.9"
@@ -1704,6 +1766,29 @@ __metadata:
   version: 2.0.8
   resolution: "@nextui-org/shared-utils@npm:2.0.8"
   checksum: 2f8e54f588133460da1555b74119c7cb403c4f6eab13cef885068e5a929361404ee01b1789813e2fb1471486eca69ac52fa289ff634dfb1fef7fef60f5f988b3
+  languageName: node
+  linkType: hard
+
+"@nextui-org/slider@npm:^2.2.17":
+  version: 2.2.17
+  resolution: "@nextui-org/slider@npm:2.2.17"
+  dependencies:
+    "@nextui-org/react-utils": 2.0.17
+    "@nextui-org/shared-utils": 2.0.8
+    "@nextui-org/tooltip": 2.0.41
+    "@react-aria/focus": 3.17.1
+    "@react-aria/i18n": 3.11.1
+    "@react-aria/interactions": 3.21.3
+    "@react-aria/slider": 3.7.8
+    "@react-aria/utils": 3.24.1
+    "@react-aria/visually-hidden": 3.8.12
+    "@react-stately/slider": 3.5.4
+  peerDependencies:
+    "@nextui-org/system": ">=2.0.0"
+    "@nextui-org/theme": ">=2.1.0"
+    react: ">=18"
+    react-dom: ">=18"
+  checksum: 18f3a3c037532324161b075df67c8c83bcb401677d85cf206700ab16acdf5039d317d3f8feea60b565dac19ce684b8caa9b55a78108e9b2703645b5c893049df
   languageName: node
   linkType: hard
 
@@ -1898,6 +1983,17 @@ __metadata:
   peerDependencies:
     react: ">=18"
   checksum: 6d2f6de05af95caab36aa3ae76cdf0c409e6315a792b4b9e84e24a9045a12717de6f1e6ce00e29bb49ce7ad93a1f595f10b306f8dae61b0b50fe80390688d352
+  languageName: node
+  linkType: hard
+
+"@nextui-org/use-data-scroll-overflow@npm:2.1.7":
+  version: 2.1.7
+  resolution: "@nextui-org/use-data-scroll-overflow@npm:2.1.7"
+  dependencies:
+    "@nextui-org/shared-utils": 2.0.8
+  peerDependencies:
+    react: ">=18"
+  checksum: 825367b94eadb5ed2a9eed5960af09164d8ef2b53ff494ecd784ad3d74aae048e15116ba44c9cd70f2487a6b80d5d0b3bdfd111a7f55ab58a8046282caf0f38e
   languageName: node
   linkType: hard
 
@@ -2465,6 +2561,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-aria/radio@npm:3.10.4":
+  version: 3.10.4
+  resolution: "@react-aria/radio@npm:3.10.4"
+  dependencies:
+    "@react-aria/focus": ^3.17.1
+    "@react-aria/form": ^3.0.5
+    "@react-aria/i18n": ^3.11.1
+    "@react-aria/interactions": ^3.21.3
+    "@react-aria/label": ^3.7.8
+    "@react-aria/utils": ^3.24.1
+    "@react-stately/radio": ^3.10.4
+    "@react-types/radio": ^3.8.1
+    "@react-types/shared": ^3.23.1
+    "@swc/helpers": ^0.5.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+  checksum: 7c51bc40b3c547def84af5546b7c854b97f4836325177d04bb5f4364939dcda9c5d14e2f099bd86f9e38ad925142894dbe93dc6fe1cdf3acf58c697f4fe6c516
+  languageName: node
+  linkType: hard
+
 "@react-aria/selection@npm:^3.18.1":
   version: 3.20.1
   resolution: "@react-aria/selection@npm:3.20.1"
@@ -2480,6 +2596,25 @@ __metadata:
     react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
   checksum: 344c7f98d6a4f44048f7f0b7936ffcce5ae8907b03669ec94901caf4070b8efa4ec1267ec7eec2c048361b7234b3bc7b1ea8b00b3fe079129336ba44e72e4ccb
+  languageName: node
+  linkType: hard
+
+"@react-aria/slider@npm:3.7.8":
+  version: 3.7.8
+  resolution: "@react-aria/slider@npm:3.7.8"
+  dependencies:
+    "@react-aria/focus": ^3.17.1
+    "@react-aria/i18n": ^3.11.1
+    "@react-aria/interactions": ^3.21.3
+    "@react-aria/label": ^3.7.8
+    "@react-aria/utils": ^3.24.1
+    "@react-stately/slider": ^3.5.4
+    "@react-types/shared": ^3.23.1
+    "@react-types/slider": ^3.7.3
+    "@swc/helpers": ^0.5.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+  checksum: 107931f11d827e821c230d651a86c885cd7d63bab7fe6a621881036ca99f580c667daf60d143de8dc9f22595c39eb9d2c1ae468fd9f840ebb44b53c611446436
   languageName: node
   linkType: hard
 
@@ -2722,6 +2857,36 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-stately/radio@npm:3.10.4":
+  version: 3.10.4
+  resolution: "@react-stately/radio@npm:3.10.4"
+  dependencies:
+    "@react-stately/form": ^3.0.3
+    "@react-stately/utils": ^3.10.1
+    "@react-types/radio": ^3.8.1
+    "@react-types/shared": ^3.23.1
+    "@swc/helpers": ^0.5.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+  checksum: 73283d79a4d35351361b19438bd8ba59f3afa5fac3a4ebac4ff00c42ce38bea61f05ff5e161107dbaec6dd270e530430b1462c97e4a987b4b6eabfb289331bc5
+  languageName: node
+  linkType: hard
+
+"@react-stately/radio@npm:^3.10.4":
+  version: 3.10.8
+  resolution: "@react-stately/radio@npm:3.10.8"
+  dependencies:
+    "@react-stately/form": ^3.0.6
+    "@react-stately/utils": ^3.10.4
+    "@react-types/radio": ^3.8.4
+    "@react-types/shared": ^3.25.0
+    "@swc/helpers": ^0.5.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
+  checksum: 0bf8abdf73b2ad48326e00d81434d51445b8f800cfdc20a4174ef2d5cf88223af0a7863a5a6f1af3e45d563ad6ff1ab7bcc9b3b3689f7e59406d8f637286a2af
+  languageName: node
+  linkType: hard
+
 "@react-stately/selection@npm:^3.15.1, @react-stately/selection@npm:^3.17.0":
   version: 3.17.0
   resolution: "@react-stately/selection@npm:3.17.0"
@@ -2733,6 +2898,34 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
   checksum: 97b47be13f1820c142cbad036bd22d686238d4823ac5b272eff2462cfe024e111370703c751ecc9af560c27801617a2cc1cecbfe5802f5c2708364a77a3cc1f3
+  languageName: node
+  linkType: hard
+
+"@react-stately/slider@npm:3.5.4":
+  version: 3.5.4
+  resolution: "@react-stately/slider@npm:3.5.4"
+  dependencies:
+    "@react-stately/utils": ^3.10.1
+    "@react-types/shared": ^3.23.1
+    "@react-types/slider": ^3.7.3
+    "@swc/helpers": ^0.5.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+  checksum: 1ca62b352902349773df23f39b6782d4497987c9c21ac7065d0ef4c94814414ffc4ee62f097333f8a9ed3de4f6d6899aa7b81556b60be63f2865cabc24209d66
+  languageName: node
+  linkType: hard
+
+"@react-stately/slider@npm:^3.5.4":
+  version: 3.5.8
+  resolution: "@react-stately/slider@npm:3.5.8"
+  dependencies:
+    "@react-stately/utils": ^3.10.4
+    "@react-types/shared": ^3.25.0
+    "@react-types/slider": ^3.7.6
+    "@swc/helpers": ^0.5.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
+  checksum: 1dc40ccb83fc8fb112f6c228554f7c1993212c51e6da8f50d239286f922720db697cd1d5b877884697cc2105f66a92d7ad1df8177d8070dfafdb520fca5233ca
   languageName: node
   linkType: hard
 
@@ -2910,6 +3103,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-types/radio@npm:3.8.1":
+  version: 3.8.1
+  resolution: "@react-types/radio@npm:3.8.1"
+  dependencies:
+    "@react-types/shared": ^3.23.1
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
+  checksum: acdb76043990a1965ff6f85d5a5420f1493496e69131dc07ebc75b11476a77ab16814368cca902a39f212609b57ea417002ea8a7f621c9cb470499effcf83f38
+  languageName: node
+  linkType: hard
+
+"@react-types/radio@npm:^3.8.1, @react-types/radio@npm:^3.8.4":
+  version: 3.8.4
+  resolution: "@react-types/radio@npm:3.8.4"
+  dependencies:
+    "@react-types/shared": ^3.25.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
+  checksum: b00f2a97ef56b4860b2bb196433d78a068031427b4f99d2350f45ee444f49de7cad646220dae53ed1126555fe715050deefc67f9728e264a27b910b274f4a6b3
+  languageName: node
+  linkType: hard
+
 "@react-types/shared@npm:3.23.1":
   version: 3.23.1
   resolution: "@react-types/shared@npm:3.23.1"
@@ -2925,6 +3140,17 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
   checksum: 3fb971b74d913bf4dc933e78f5d5c418574fca7313198ef7b0e77c528f8a2e5f76324fb8a5a2be52b5ed997018a6819457e70f964eb1c80dc62941eb8b678710
+  languageName: node
+  linkType: hard
+
+"@react-types/slider@npm:^3.7.3, @react-types/slider@npm:^3.7.6":
+  version: 3.7.6
+  resolution: "@react-types/slider@npm:3.7.6"
+  dependencies:
+    "@react-types/shared": ^3.25.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0
+  checksum: 0cf0caad11dd948ee458522ebf1fc61721a5003affedd1108c81a5a43e36cbbc26053d2fc3c0f5bf1cc663006444e0d99f68d0cc83be7630de78cd050ac1481b
   languageName: node
   linkType: hard
 
@@ -9799,13 +10025,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nextjs-app@workspace:packages/nextjs-app"
   dependencies:
+    "@heroicons/react": ^2.1.5
     "@nextui-org/button": 2.0.38
+    "@nextui-org/card": ^2.0.34
     "@nextui-org/code": 2.0.33
     "@nextui-org/input": 2.2.5
     "@nextui-org/kbd": 2.0.34
     "@nextui-org/link": 2.0.35
     "@nextui-org/listbox": 2.1.27
     "@nextui-org/navbar": 2.0.37
+    "@nextui-org/radio": ^2.1.5
+    "@nextui-org/scroll-shadow": ^2.1.20
+    "@nextui-org/slider": ^2.2.17
     "@nextui-org/snippet": 2.0.43
     "@nextui-org/spinner": ^2.0.34
     "@nextui-org/switch": 2.0.34

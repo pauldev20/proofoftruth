@@ -7,7 +7,7 @@ export default function LoginPage() {
     const router = useRouter();
     const onLoginSignup = () => {
         console.log("Login / Sign Up");
-        router.replace("/");
+        router.replace("/statements");
     };
 
     return (
