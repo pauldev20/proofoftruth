@@ -9,8 +9,6 @@ import {IERC20} from "../interfaces/IERC20.sol";
 
 contract HumanOracleWithVault is Permit2Vault {
 
-	using ByteHasher for bytes;
-
 	// ====================
 	// ====== Structs =====
 	// ====================
@@ -123,7 +121,7 @@ contract HumanOracleWithVault is Permit2Vault {
 		worldId = IWorldID(_worldIdAddr);
 		worldToken = IERC20(_worldTokenAddr);
 		groupId = _groupId;
-		externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToFieldSixtyNine(), _action).hashToFieldSixtyNine();
+		externalNullifierHash = ByteHasher.hashToField(abi.encodePacked(ByteHasher.hashToField(abi.encodePacked(_appId)), _action));
 	}
 
 	// ====================
@@ -147,7 +145,7 @@ contract HumanOracleWithVault is Permit2Vault {
 		worldId.verifyProof(
 			merkleRoot,
 			groupId,
-			abi.encodePacked(userAddr).hashToFieldSixtyNine(),
+			ByteHasher.hashToField(abi.encodePacked(userAddr)),
 			nullifierHash,
 			externalNullifierHash,
 			proof
