@@ -6,7 +6,7 @@ import { Button } from "@nextui-org/button";
 import { MiniKit, ResponseEvent } from "@worldcoin/minikit-js";
 import { createPublicClient, http, getContract } from "viem";
 import { worldchain } from "viem/chains";
-import deployedContracts from "../../../nextjs/contracts/deployedContracts";
+import deployedContracts from "@/contracts/deployedContracts";
 
 const subscribeToWalletAuth = async (nonce: string) => {
     return new Promise((resolve, reject) => {
@@ -43,6 +43,7 @@ const subscribeToWalletAuth = async (nonce: string) => {
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+
     const onLoginSignup = async () => {
         setLoading(true);
 
@@ -50,9 +51,11 @@ export default function LoginPage() {
 			chain: worldchain,
 			transport: http("https://worldchain-mainnet.g.alchemy.com/public"),
 		});
-		// const contract = getContract({
-		// 	address: deployedContracts[worldchain].HumanOracle.address,
-		// })
+		const HumanOrcale = getContract({
+			address: deployedContracts[worldchain].MockHumanOracle.address,
+			abi: deployedContracts[worldchain].MockHumanOracle.abi,
+			client
+		});
 
 		// get wallet auth
         try {
@@ -73,10 +76,15 @@ export default function LoginPage() {
 			return;
         }
 
-		// // check if registered?
-		// try {
-			
-		// }
+		// check if registered?
+		try {
+			const result = HumanOrcale.read.isUserRegistered(MiniKit.walletAddress);
+			console.log(result);
+		} catch (error) {
+			console.error(error);
+			setLoading(false);
+			return;
+		}
 
 		// // if not registered, register
 		// try {
