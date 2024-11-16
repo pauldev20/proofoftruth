@@ -104,12 +104,13 @@ contract HumanOracle {
 		_;
 	}
 
-	modifier userOldEnough(uint256 voteId) {
-		if (users[address(msg.sender)].createdAtBlock > getVoteStartBlock(voteId)) {
-			revert("user was created after voting begun");
-		}
-		_;
-	}
+	// security measurement
+	// modifier userOldEnough(uint256 voteId) {
+	// 	if (users[address(msg.sender)].createdAtBlock > getVoteStartBlock(voteId)) {
+	// 		revert("user was created after voting begun");
+	// 	}
+	// 	_;
+	// }
 
 	// ====================
 	// === Constructor ====
@@ -151,7 +152,7 @@ contract HumanOracle {
 		emit UserRegistered(userAddr, users[userAddr].nullifierHash, users[userAddr].createdAtBlock);
 	}
 
-	function submitVotingDecisionWithStake(uint256 voteId, uint256 answerIndex, uint256 amount) userOldEnough(voteId) userExists() hasNotVoted(voteId) voteActive(voteId) external {
+	function submitVotingDecisionWithStake(uint256 voteId, uint256 answerIndex, uint256 amount) userExists() hasNotVoted(voteId) voteActive(voteId) external {
 		require(amount <= 5, "max staking amount is 5");
 		address userAddr = address(msg.sender);
 		stakeForAnswer(userAddr, voteId, answerIndex, amount);
@@ -160,6 +161,7 @@ contract HumanOracle {
 
 	function claimRewardForVote(uint256 voteId) voteEnded(voteId) external returns (uint256) {
 		address userAddr = address(msg.sender);
+		require(!hasUserClaimedForVote(userAddr, voteId), "user already claimed");
 		setUserHasClaimedToTrueForVote(userAddr, voteId);
 		uint256 payout = getStakeResolvedUserAmount(userAddr, voteId);
 		emit RewardClaimed(userAddr, voteId, payout);
@@ -187,7 +189,7 @@ contract HumanOracle {
 
 		createNewStake(voteId, bounty);
 
-		emit VoteCreated(votes[voteId].id, votes[voteId].question, votes[voteId].startBlock, votes[voteId].durationInBlocks);
+		emit VoteCreated(voteId, getVoteQuestion(voteId), getVoteStartBlock(voteId), getVoteDurationInBlocks(voteId));
 	}
 
 	function getVotingPage(uint256 voteId) external view returns (
@@ -244,8 +246,12 @@ contract HumanOracle {
 		return false;
 	}
 
-	function hasUserClaimedForVote(address userAddr, uint256 voteId) external view returns (bool) {
+	function hasUserClaimedForVote(address userAddr, uint256 voteId) public view returns (bool) {
 		return stakesForVoteIds[voteId].hasUserClaimed[userAddr];
+	}
+
+	function getUserPayoutForVote(address userAddr, uint256 voteId) public view returns (uint256 payout) {
+		return getStakeResolvedUserAmount(userAddr, voteId);
 	}
 
 	// internal
@@ -255,8 +261,10 @@ contract HumanOracle {
 		Stake storage newStake = stakesForVoteIds[voteId];
 		newStake.totalStake = initialStake;
 		uint256 answerCount = votes[voteId].answers.length;
+		uint256 initialStakePerAnswer = initialStake / answerCount;
 		for (uint i = 0; i < answerCount; i++) {
 			newStake.answers.push();
+			newStake.answers[i].totalStake = initialStakePerAnswer;
 		}
 	}
 
