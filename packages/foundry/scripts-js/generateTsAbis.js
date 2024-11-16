@@ -147,11 +147,11 @@ function main() {
     )
   );
 
-  if (!existsSync("../nextjs-app/contracts/")) {
-    mkdirSync("../nextjs-app/contracts/");
+  if (!existsSync("../nextjs-app/src/contracts/")) {
+    mkdirSync("../nextjs-app/src/contracts/");
   }
   writeFileSync(
-    `../nextjs-app/contracts/deployedContracts.ts`,
+    `../nextjs-app/src/contracts/deployedContracts.ts`,
 	format(
 	  `${generatedContractComment} \n\nconst deployedContracts = {${fileContent}} as const;\n`,
 	  {
