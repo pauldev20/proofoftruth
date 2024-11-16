@@ -290,7 +290,7 @@ const deployedContracts = {
   },
   480: {
     HumanOracleWithVault: {
-      address: "0xc564388f1d0e68e4ab4c240ebae712c0c5670b62",
+      address: "0x58b4541b7a47662c64151908b7729d17af0d3d2f",
       abi: [
         {
           type: "constructor",
@@ -639,19 +639,9 @@ const deployedContracts = {
           name: "signUpWithWorldId",
           inputs: [
             {
-              name: "merkleRoot",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "nullifierHash",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "proof",
-              type: "uint256[8]",
-              internalType: "uint256[8]",
+              name: "data",
+              type: "bytes",
+              internalType: "bytes",
             },
           ],
           outputs: [],

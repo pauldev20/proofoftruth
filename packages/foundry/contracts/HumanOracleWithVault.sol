@@ -132,8 +132,14 @@ contract HumanOracleWithVault is Permit2Vault {
 
 	// external
 
-	function signUpWithWorldId(uint256 merkleRoot, uint256 nullifierHash, uint256[8] calldata proof) onlyNewUser() external {
+	function signUpWithWorldId(bytes memory data) onlyNewUser() external {
 		address userAddr = address(msg.sender);
+
+		(
+			uint256 merkleRoot,
+			uint256 nullifierHash,
+			uint256[8] memory proof
+		) = abi.decode(data, (uint256, uint256, uint256[8]));
 
 		if (registeredNullifierHashes[nullifierHash] == true) {
 			revert ("nullifierHash already existing");
