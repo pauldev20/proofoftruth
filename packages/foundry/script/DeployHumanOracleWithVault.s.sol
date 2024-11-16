@@ -11,7 +11,7 @@ contract DeployHumanOracleWithVault is ScaffoldETHDeploy {
   address public permit2 = 0x000000000022D473030F116dDEE9F6B43aC78BA3;
   address public owner = 0x4639B9F663C14Bad89Ddcc16966e85Bc81dCCD40;
   uint256 public groupId = 1;
-  string public appId = "app_485be80eb191bba1e603c1aeb6743660";
+  string public appId = "app_22ea9fb73d53333c2997e8f16e60cc6b";
   string public action = "registration";
 
   function run() external ScaffoldEthDeployerRunner {

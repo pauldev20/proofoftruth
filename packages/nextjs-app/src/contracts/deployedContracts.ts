@@ -289,7 +289,7 @@ const deployedContracts = {
   },
   480: {
     HumanOracleWithVault: {
-      address: "0x788219295e4fb9b2fd1005462b2aafe446cb01ea",
+      address: "0xc816bed45a8d368e37e79bd1409a529a76d67078",
       abi: [
         {
           type: "constructor",
