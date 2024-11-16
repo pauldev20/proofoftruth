@@ -4,76 +4,32 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import deployedContracts from "@/contracts/deployedContracts";
 import { Button } from "@nextui-org/button";
-import {
-    MiniAppSendTransactionPayload,
-    MiniAppVerifyActionPayload,
-    MiniAppVerifyActionSuccessPayload,
-    MiniKit,
-    ResponseEvent,
-    VerificationLevel,
-} from "@worldcoin/minikit-js";
-import { createPublicClient, decodeAbiParameters, getContract, hexToBigInt, http } from "viem";
-import { worldchain, optimism } from "viem/chains";
+import { MiniAppVerifyActionSuccessPayload, MiniKit, VerificationLevel } from "@worldcoin/minikit-js";
+import { createPublicClient, decodeAbiParameters, getContract, http } from "viem";
+import { worldchain } from "viem/chains";
 
-const subscribeToWalletAuth = async (nonce: string) => {
-    return new Promise((resolve, reject) => {
-        MiniKit.subscribe(ResponseEvent.MiniAppWalletAuth, async payload => {
-            if (payload.status === "error") {
-                reject(new Error("Payload status is error"));
-            } else {
-                try {
-                    const response = await fetch("/api/siwe", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            payload: payload,
-                            nonce,
-                        }),
-                    });
+export interface TransactionStatus {
+    transactionHash: `0x${string}`;
+    transactionStatus: "pending" | "mined" | "failed";
+}
+async function waitOnTransaction(transactionId: string): Promise<TransactionStatus> {
+    while (true) {
+        try {
+            const response = await fetch(
+                `https://developer.worldcoin.org/api/v2/minikit/transaction/${transactionId}?app_id=${MiniKit.appId}&type=transaction`,
+            );
+            const data: TransactionStatus = await response.json();
 
-                    if (!response.ok) {
-                        reject(new Error("Failed to complete SIWE"));
-                    }
-
-                    const responseData = await response.json();
-
-                    resolve(responseData);
-                } catch (error) {
-                    reject(error);
-                }
+            if (data.transactionStatus === "mined" || data.transactionStatus === "failed") {
+                return data;
             }
-        });
-    });
-};
 
-const subscribeToTransaction = async (): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        MiniKit.subscribe(ResponseEvent.MiniAppSendTransaction, async (payload: MiniAppSendTransactionPayload) => {
-            if (payload.status === "error") {
-                console.error("Error sending transaction", payload);
-
-                reject(new Error("Error sending transaction: " + payload.details));
-            } else {
-                resolve(payload.transaction_id);
-            }
-        });
-    });
-};
-
-const subscribeToVerifyAction = async (): Promise<MiniAppVerifyActionSuccessPayload> => {
-    return new Promise((resolve, reject) => {
-        MiniKit.subscribe(ResponseEvent.MiniAppVerifyAction, async (response: MiniAppVerifyActionPayload) => {
-            if (response.status === "error") {
-                console.log("Error payload", response);
-
-                return reject(new Error("Error in MiniAppVerifyAction payload"));
-            }
-            resolve(response as MiniAppVerifyActionSuccessPayload);
-        });
-    });
-};
+            await new Promise<void>(resolve => setTimeout(resolve, 2000));
+        } catch (error) {
+            throw Error(`Error while waiting on transaction ${error}`);
+        }
+    }
+}
 
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
@@ -83,13 +39,12 @@ export default function LoginPage() {
         setLoading(true);
 
         const client = createPublicClient({
-            chain: optimism,
-            // transport: http("https://worldchain-mainnet.g.alchemy.com/public"),
-            transport: http("https://optimism.llamarpc.com"),
+            chain: worldchain,
+            transport: http("https://worldchain-mainnet.g.alchemy.com/public"),
         });
         const HumanOrcale = getContract({
-            address: deployedContracts[optimism.id].MockHumanOracle.address as `0x${string}`,
-            abi: deployedContracts[optimism.id].MockHumanOracle.abi,
+            address: deployedContracts[client.chain.id].MockHumanOracle.address as `0x${string}`,
+            abi: deployedContracts[client.chain.id].MockHumanOracle.abi,
             client,
         });
 
@@ -98,17 +53,29 @@ export default function LoginPage() {
             const res = await fetch(`/api/nonce`);
             const { nonce } = await res.json();
 
-            const generateMessageResult = await MiniKit.commands.walletAuth({
+            const walletAuthResult = await MiniKit.commandsAsync.walletAuth({
                 nonce: nonce,
                 expirationTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
                 notBefore: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
                 statement: "Login or create an account",
             });
+            const siweResponse = await fetch("/api/siwe", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    payload: walletAuthResult.finalPayload,
+                    nonce,
+                }),
+            });
 
-            console.log(generateMessageResult);
-            const result = await subscribeToWalletAuth(nonce);
+            if (!siweResponse.ok) {
+                throw new Error("Failed to complete SIWE");
+            }
+            const siweData = await siweResponse.json();
 
-            console.log(result);
+            console.log(siweData);
         } catch (error) {
             console.error(error);
             setLoading(false);
@@ -118,45 +85,50 @@ export default function LoginPage() {
 
         // check if registered and register if not
         try {
-            const result = await HumanOrcale.read.isUserRegistered([MiniKit.walletAddress]);
+            const result = (await HumanOrcale.read.isUserRegistered([MiniKit.walletAddress])) as boolean;
 
-            console.log(result);
-            if (true || result == false) {
-                MiniKit.commands.verify({
+            if (result == false) {
+                const verifyResult = await MiniKit.commandsAsync.verify({
                     action: "registration",
                     signal: MiniKit.walletAddress!,
                     verification_level: VerificationLevel.Orb,
                 });
-                const verifyResult = await subscribeToVerifyAction();
 
-                console.log(verifyResult);
-				// @todo only optimism???
-                const transactionPayload = MiniKit.commands.sendTransaction({
+                if (verifyResult.finalPayload.status === "error") {
+                    throw new Error("Error in verify action");
+                }
+                const verifySuccessResult = verifyResult.finalPayload as MiniAppVerifyActionSuccessPayload;
+
+                await new Promise(res => setTimeout(res, 2000)); // because of app bug
+
+                const transactionResult = await MiniKit.commandsAsync.sendTransaction({
                     transaction: [
                         {
-                            address: deployedContracts[optimism.id].MockHumanOracle.address,
-                            abi: deployedContracts[optimism.id].MockHumanOracle.abi,
+                            address: HumanOrcale.address,
+                            abi: HumanOrcale.abi,
                             functionName: "signUpWithWorldId",
                             args: [
-                                hexToBigInt(verifyResult.merkle_root as `0x${string}`),
-                                hexToBigInt(verifyResult.nullifier_hash as `0x${string}`),
-                                decodeAbiParameters([{ type: "uint256[8]" }], verifyResult.proof as `0x${string}`)[0],
+                                verifySuccessResult.merkle_root,
+                                verifySuccessResult.nullifier_hash,
+                                decodeAbiParameters(
+                                    [{ type: "uint256[8]" }],
+                                    verifySuccessResult.proof as `0x${string}`,
+                                )[0].map((value: bigint) => `0x${value.toString(16).padStart(64, "0")}`),
                             ],
                         },
                     ],
                 });
 
-                console.log(transactionPayload);
-                const transactionId = await subscribeToTransaction();
+                if (transactionResult.finalPayload.status === "error") {
+                    throw new Error("Error in submitting transaction");
+                }
 
-                console.log(transactionId);
-                // useWaitForTransactionReceipt({
-                // 	client: client,
-                // 	appConfig: {
-                // 		app_id: process.env.NEXT_PUBLIC_APP_ID,
-                // 	},
-                // 	transactionId: transactionId,
-                // })
+                const tx = await waitOnTransaction(transactionResult.finalPayload.transaction_id);
+
+                if (tx.transactionStatus == "failed") {
+                    throw Error("Error executing transaction");
+                }
+                router.replace("/statements");
             } else {
                 router.replace("/statements");
             }
