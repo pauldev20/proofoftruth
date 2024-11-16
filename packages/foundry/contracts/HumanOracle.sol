@@ -7,8 +7,6 @@ import {ByteHasher} from "./ByteHasher.sol";
 
 contract HumanOracle {
 
-	using ByteHasher for bytes;
-
 	// ====================
 	// ====== Structs =====
 	// ====================
@@ -119,7 +117,8 @@ contract HumanOracle {
 	constructor(address _worldIdAddr, uint256 _groupId, string memory _appId, string memory _action) {
 		worldId = IWorldID(_worldIdAddr);
 		groupId = _groupId;
-		externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _action).hashToField();
+		externalNullifierHash = ByteHasher.hashToField(abi.encodePacked(ByteHasher.hashToField(abi.encodePacked(_appId)), _action));
+		// externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _action).hashToField();
 	}
 
 	// ====================
@@ -137,7 +136,7 @@ contract HumanOracle {
 		worldId.verifyProof(
 			merkleRoot,
 			groupId,
-			abi.encodePacked(userAddr).hashToField(),
+			ByteHasher.hashToField(abi.encodePacked(userAddr)),
 			nullifierHash,
 			externalNullifierHash,
 			proof

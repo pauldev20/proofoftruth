@@ -9,8 +9,6 @@ import {IERC20} from "./IERC20.sol";
 
 contract HumanOracleWithVault is Permit2Vault {
 
-	using ByteHasher for bytes;
-
 	// ====================
 	// ====== Structs =====
 	// ====================
@@ -123,7 +121,7 @@ contract HumanOracleWithVault is Permit2Vault {
 		worldId = IWorldID(_worldIdAddr);
 		worldToken = IERC20(_worldTokenAddr);
 		groupId = _groupId;
-		externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _action).hashToField();
+		externalNullifierHash = ByteHasher.hashToField(abi.encodePacked(ByteHasher.hashToField(abi.encodePacked(_appId)), _action));
 	}
 
 	// ====================
@@ -132,8 +130,14 @@ contract HumanOracleWithVault is Permit2Vault {
 
 	// external
 
-	function signUpWithWorldId(uint256 merkleRoot, uint256 nullifierHash, uint256[8] calldata proof) onlyNewUser() external {
+	function signUpWithWorldId(bytes memory data) onlyNewUser() external {
 		address userAddr = address(msg.sender);
+
+		(
+			uint256 merkleRoot,
+			uint256 nullifierHash,
+			uint256[8] memory proof
+		) = abi.decode(data, (uint256, uint256, uint256[8]));
 
 		if (registeredNullifierHashes[nullifierHash] == true) {
 			revert ("nullifierHash already existing");
@@ -141,7 +145,7 @@ contract HumanOracleWithVault is Permit2Vault {
 		worldId.verifyProof(
 			merkleRoot,
 			groupId,
-			abi.encodePacked(userAddr).hashToField(),
+			ByteHasher.hashToField(abi.encodePacked(userAddr)),
 			nullifierHash,
 			externalNullifierHash,
 			proof
