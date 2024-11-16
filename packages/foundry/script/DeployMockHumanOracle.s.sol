@@ -4,7 +4,7 @@ pragma solidity ^0.8.19;
 import "../contracts/MockHumanOracle.sol";
 import "./DeployHelpers.s.sol";
 
-contract DeployYourContract is ScaffoldETHDeploy {
+contract DeployMockHumanOracle is ScaffoldETHDeploy {
   // use `deployer` from `ScaffoldETHDeploy`
   function run() external ScaffoldEthDeployerRunner {
     MockHumanOracle humanOracle = new MockHumanOracle();

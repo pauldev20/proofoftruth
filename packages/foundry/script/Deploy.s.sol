@@ -2,12 +2,16 @@
 pragma solidity ^0.8.19;
 
 import "./DeployHelpers.s.sol";
-import { DeployYourContract } from "./DeployYourContract.s.sol";
+import { DeployMockHumanOracle } from "./DeployMockHumanOracle.s.sol";
+import { DeployHumanOracle } from "./DeployHumanOracle.s.sol";
 
 contract DeployScript is ScaffoldETHDeploy {
   function run() external {
-    DeployYourContract deployYourContract = new DeployYourContract();
-    deployYourContract.run();
+    // DeployMockHumanOracle deployMockHumanOracle = new DeployMockHumanOracle();
+    // deployMockHumanOracle.run();
+
+    DeployHumanOracle deployHumanOracle = new DeployHumanOracle();
+    deployHumanOracle.run();
 
     // deploy more contracts here
     // DeployMyContract deployMyContract = new DeployMyContract();
