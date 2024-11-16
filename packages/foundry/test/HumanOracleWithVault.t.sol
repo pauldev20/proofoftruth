@@ -28,7 +28,7 @@ contract HumanOracleWithVaultTest is TestUtils {
         vm.chainId(1);
         ownerKey = _randomUint256();
         owner = vm.addr(ownerKey);
-        vault = new HumanOracleWithVault(address(0), 0, string(""), string(""), address(permit2), owner);
+        vault = new HumanOracleWithVault(address(0), address(token1), 0, string(""), string(""), address(permit2), owner);
         // Set up unlimited token approvals from the user onto the permit2 contract.
         vm.prank(owner);
         token1.approve(address(permit2), type(uint256).max);

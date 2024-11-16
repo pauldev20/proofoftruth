@@ -53,6 +53,7 @@ contract HumanOracleWithVault is Permit2Vault {
 	mapping (uint256 => bool) private registeredNullifierHashes;
 	uint256 internal immutable groupId = 1;
 	uint256 internal immutable externalNullifierHash;
+	IERC20 public worldToken;
 
 
 	// ====================
@@ -118,8 +119,9 @@ contract HumanOracleWithVault is Permit2Vault {
 	// === Constructor ====
 	// ====================
 
-	constructor(address _worldIdAddr, uint256 _groupId, string memory _appId, string memory _action, address _permit, address _owner) Permit2Vault(_permit, _owner) {
+	constructor(address _worldIdAddr, address _worldTokenAddr, uint256 _groupId, string memory _appId, string memory _action, address _permit, address _owner) Permit2Vault(_permit, _owner) {
 		worldId = IWorldID(_worldIdAddr);
+		worldToken = IERC20(_worldTokenAddr);
 		groupId = _groupId;
 		externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _action).hashToField();
 	}
@@ -154,10 +156,18 @@ contract HumanOracleWithVault is Permit2Vault {
 		emit UserRegistered(userAddr, users[userAddr].nullifierHash, users[userAddr].createdAtBlock);
 	}
 
-	function submitVotingDecisionWithStake(uint256 voteId, uint256 answerIndex, uint256 amount) userExists() hasNotVoted(voteId) voteActive(voteId) external {
+	function submitVotingDecisionWithStake(
+		uint256 voteId,
+		uint256 answerIndex,
+		uint256 amount,
+		uint256 nonce,
+		uint256 deadline,
+		bytes calldata signature
+	) userExists() hasNotVoted(voteId) voteActive(voteId) external {
 		require(amount <= 5, "max staking amount is 5");
 		address userAddr = address(msg.sender);
 		stakeForAnswer(userAddr, voteId, answerIndex, amount);
+		this.depositERC20(worldToken, amount, nonce, deadline, signature);
 		emit VoteSubmitted(userAddr, voteId, answerIndex, amount);
 	}
 
@@ -166,6 +176,7 @@ contract HumanOracleWithVault is Permit2Vault {
 		require(!hasUserClaimedForVote(userAddr, voteId), "user already claimed");
 		setUserHasClaimedToTrueForVote(userAddr, voteId);
 		uint256 payout = getStakeResolvedUserAmount(userAddr, voteId);
+		this.withdrawERC20(worldToken, payout);
 		emit RewardClaimed(userAddr, voteId, payout);
 		return payout;
 	}
@@ -255,16 +266,6 @@ contract HumanOracleWithVault is Permit2Vault {
 	function getUserPayoutForVote(address userAddr, uint256 voteId) public view returns (uint256 payout) {
 		return getStakeResolvedUserAmount(userAddr, voteId);
 	}
-
-	// function depositERC20(
-	// 	IERC20 token,
-	// 	uint256 amount,
-	// 	uint256 nonce,
-	// 	uint256 deadline,
-	// 	bytes calldata signature
-	// ) public {
-	// 	Permit2Vault.depositERC20(token, amount, nonce, deadline, signature);
-	// }
 
 	// internal
 
