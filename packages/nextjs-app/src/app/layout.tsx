@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import { NextProviders } from "../providers/nextUiProvider";
 import { appConfig } from "@/appConfig";
-import { ErudaProvider } from "@/components/eruda";
+import { ErudaProvider } from "@/providers/eruda";
 import { MiniKitProvider } from "@/providers/miniKitProvider";
 import "@/styles/globals.css";
 import clsx from "clsx";

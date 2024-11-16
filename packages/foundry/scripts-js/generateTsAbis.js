@@ -153,7 +153,7 @@ function main() {
   writeFileSync(
     `../nextjs-app/src/contracts/deployedContracts.ts`,
 	format(
-	  `${generatedContractComment} \n\nconst deployedContracts = {${fileContent}} as const;\n`,
+	  `${generatedContractComment} \n\nconst deployedContracts = {${fileContent}};\nexport default deployedContracts;\n`,
 	  {
 		parser: "typescript",
 	  }
