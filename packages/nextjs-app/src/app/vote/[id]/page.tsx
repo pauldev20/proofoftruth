@@ -12,6 +12,9 @@ import { Slider } from "@nextui-org/slider";
 import { Spinner } from "@nextui-org/spinner";
 import { cn } from "@nextui-org/theme";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { MiniKit } from "@worldcoin/minikit-js";
+import { waitOnTransaction } from "@/lib/miniKit";
+
 
 interface CustomRadioProps {
     children: React.ReactNode;
@@ -66,6 +69,7 @@ export default function VotePage({ params }: VotePageProps) {
     const [selected, setSelected] = useState<string | null>(null);
     const [data, setData] = useState<Statement | null>(null);
     const [stakeFactor, setStakeFactor] = useState(1);
+    const [loading, setLoading] = useState(false);
     const { HumanOracle } = useContractContext();
     const router = useRouter();
 
@@ -74,6 +78,43 @@ export default function VotePage({ params }: VotePageProps) {
             setData(convertData(await HumanOracle.read.getVotingPage([params.id])));
         })();
     }, []);
+
+    const handleVote = async () => {
+        if (!selected || !data) return;
+        setLoading(true);
+
+        try {
+            const transactionResult = await MiniKit.commandsAsync.sendTransaction({
+                transaction: [
+                    {
+                        address: HumanOracle.address,
+                        abi: HumanOracle.abi,
+                        functionName: "submitVotingDecisionWithStake",
+                        args: [
+                            Number(params.id),
+                            data.answers.findIndex(item => item.answer === selected) || 0,
+                            stakeFactor,
+                        ],
+                    },
+                ],
+            });
+
+            if (transactionResult.finalPayload.status === "error") {
+                throw new Error("Error in submitting transaction");
+            }
+
+            const tx = await waitOnTransaction(transactionResult.finalPayload.transaction_id);
+
+            if (tx.transactionStatus == "failed") {
+                throw Error("Error executing transaction");
+            }
+            console.log(tx);
+            setLoading(false);
+        } catch (error) {
+            console.error(error);
+            setLoading(false);
+        }
+    };
 
     if (!data) {
         return (
@@ -87,7 +128,10 @@ export default function VotePage({ params }: VotePageProps) {
         <section className="h-dvh flex flex-col bg-gr">
             <Navbar
                 startContent={
-                    <IconButton icon={<ChevronLeftIcon className="size-7" onClick={() => router.back()} />} />
+                    <IconButton
+                        disabled={loading}
+                        icon={<ChevronLeftIcon className="size-7" onClick={() => router.back()} />}
+                    />
                 }
             />
             <div className="w-full p-5 pt-6 pb-6">
@@ -124,7 +168,7 @@ export default function VotePage({ params }: VotePageProps) {
                 />
                 <div className="w-3/4 h-px bg-gray-300" />
                 <div className="w-full items-center">
-                    <Button color="primary" fullWidth isDisabled={!selected}>
+                    <Button color="primary" fullWidth isDisabled={!selected} onClick={handleVote} isLoading={loading}>
                         <p>
                             Submit Selection And Stake {stakeFactor} <span className="font-bold">WLD</span>
                         </p>
