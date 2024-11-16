@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import {IWorldID} from "../lib/world-id-onchain-template/contracts/src/interfaces/IWorldID.sol";
+import {IWorldID} from "./IWorldID.sol";
 import {ByteHasher} from "./ByteHasher.sol";
 // import "forge-std/console.sol";
 

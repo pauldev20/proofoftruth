@@ -290,7 +290,7 @@ const deployedContracts = {
   },
   480: {
     HumanOracle: {
-      address: "0xd458ac0643add160a344b94b2dd165e6acb3bed5",
+      address: "0x0bb141ef91dec0d190aa01b6d6d9d840cc3d04cc",
       abi: [
         {
           type: "constructor",
@@ -367,6 +367,30 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "getUserHasClaimedForVote",
+          inputs: [
+            {
+              name: "userAddr",
+              type: "address",
+              internalType: "address",
+            },
+            {
+              name: "voteId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "getVotingList",
           inputs: [],
           outputs: [
@@ -424,12 +448,50 @@ const deployedContracts = {
         },
         {
           type: "function",
+          name: "hasUserVotedForVote",
+          inputs: [
+            {
+              name: "voteId",
+              type: "uint256",
+              internalType: "uint256",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
           name: "isUserRegistered",
           inputs: [
             {
               name: "userAddr",
               type: "address",
               internalType: "address",
+            },
+          ],
+          outputs: [
+            {
+              name: "",
+              type: "bool",
+              internalType: "bool",
+            },
+          ],
+          stateMutability: "view",
+        },
+        {
+          type: "function",
+          name: "isVotingOver",
+          inputs: [
+            {
+              name: "voteId",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           outputs: [
