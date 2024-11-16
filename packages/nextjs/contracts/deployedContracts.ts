@@ -290,7 +290,7 @@ const deployedContracts = {
   },
   480: {
     MockHumanOracle: {
-      address: "0xe4d0116e9d6b5fc85a6ead0188d006b80a458b93",
+      address: "0xc8c57bea6ecad6edc1abd4ca33b2660a0300896e",
       abi: [
         {
           type: "function",
