@@ -4,11 +4,11 @@ pragma solidity >=0.8.0 <0.9.0;
 // Useful for debugging. Remove when deploying to a live network.
 // import "forge-std/console.sol";
 
-contract HumanOracle {
+contract MockHumanOracle {
 	// ====================
 	// ====== Structs =====
 	// ====================
-
+	
 	struct User {
 		uint256 nullifierHash;
 		uint256 createdAtBlock;
@@ -37,8 +37,8 @@ contract HumanOracle {
 	// ==== Variables =====
 	// ====================
 
-	mapping (address => User) public users;
-	Vote[] votes;
+	mapping (address => User) users;
+	Vote[]                    votes;
 
 	// ====================
 	// ====== Events ======
@@ -56,11 +56,6 @@ contract HumanOracle {
 	// ==== Modifiers =====
 	// ====================
 
-	modifier onlyNewUser() {
-		require(users[msg.sender].nullifierHash == uint256(0), "user already signed up");
-		_;
-	}
-
 	// ====================
 	// === Constructor ====
 	// ====================
@@ -71,14 +66,8 @@ contract HumanOracle {
 
 	// external
 
-	function signUpWithWorldId(uint256 nullifierHash, uint256[8] calldata proof) onlyNewUser external {
-		address userAddr = address(msg.sender);
-		User memory user = User({
-			nullifierHash: nullifierHash,
-			createdAtBlock: block.number
-		});
-		users[userAddr] = user;
-		emit UserRegistered(userAddr, user.nullifierHash, user.createdAtBlock);
+	function signUpWithWorldId(uint256 nullifierHash, uint256[8] calldata proof) external {
+		emit UserRegistered(address(msg.sender), nullifierHash, block.number);
 	}
 
 	function submitVotingDecisionWithStake(uint256 voteId, uint256 answerIndex, uint256 stake) external {
@@ -90,7 +79,10 @@ contract HumanOracle {
 	}
 
 	function isUserRegistered(address userAddr) external pure returns (bool) {
-		return true;
+		if (userAddr == address(0))
+			return false;
+		else
+			return true;
 	}
 
 	function createVote(string calldata question, string[] calldata answers, uint256 startBlock, uint256 durationInBlocks) external {
