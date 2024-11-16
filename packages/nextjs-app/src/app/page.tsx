@@ -12,8 +12,8 @@ import {
     ResponseEvent,
     VerificationLevel,
 } from "@worldcoin/minikit-js";
-import { createPublicClient, decodeAbiParameters, getContract, hexToBigInt, http, stringToHex } from "viem";
-import { worldchain } from "viem/chains";
+import { createPublicClient, decodeAbiParameters, getContract, hexToBigInt, http } from "viem";
+import { worldchain, optimism } from "viem/chains";
 
 const subscribeToWalletAuth = async (nonce: string) => {
     return new Promise((resolve, reject) => {
@@ -83,12 +83,13 @@ export default function LoginPage() {
         setLoading(true);
 
         const client = createPublicClient({
-            chain: worldchain,
-            transport: http("https://worldchain-mainnet.g.alchemy.com/public"),
+            chain: optimism,
+            // transport: http("https://worldchain-mainnet.g.alchemy.com/public"),
+            transport: http("https://optimism.llamarpc.com"),
         });
         const HumanOrcale = getContract({
-            address: deployedContracts[worldchain.id].MockHumanOracle.address as `0x${string}`,
-            abi: deployedContracts[worldchain.id].MockHumanOracle.abi,
+            address: deployedContracts[optimism.id].MockHumanOracle.address as `0x${string}`,
+            abi: deployedContracts[optimism.id].MockHumanOracle.abi,
             client,
         });
 
@@ -97,7 +98,7 @@ export default function LoginPage() {
             const res = await fetch(`/api/nonce`);
             const { nonce } = await res.json();
 
-            const generateMessageResult = MiniKit.commands.walletAuth({
+            const generateMessageResult = await MiniKit.commands.walletAuth({
                 nonce: nonce,
                 expirationTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
                 notBefore: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
@@ -129,11 +130,12 @@ export default function LoginPage() {
                 const verifyResult = await subscribeToVerifyAction();
 
                 console.log(verifyResult);
+				// @todo only optimism???
                 const transactionPayload = MiniKit.commands.sendTransaction({
                     transaction: [
                         {
-                            address: deployedContracts[worldchain.id].MockHumanOracle.address,
-                            abi: deployedContracts[worldchain.id].MockHumanOracle.abi,
+                            address: deployedContracts[optimism.id].MockHumanOracle.address,
+                            abi: deployedContracts[optimism.id].MockHumanOracle.abi,
                             functionName: "signUpWithWorldId",
                             args: [
                                 hexToBigInt(verifyResult.merkle_root as `0x${string}`),
