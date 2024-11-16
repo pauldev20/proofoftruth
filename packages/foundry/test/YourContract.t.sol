@@ -2,15 +2,15 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import "../contracts/HumanOracle.sol";
+import "../contracts/HumanOracleWithoutWorldId.sol";
 
 contract TestHumanOracle is Test {
-	HumanOracle public ho;
+	HumanOracleWithoutWorldId public ho;
 
 	string[] public answers;
 
 	function setUp() public {
-		ho = new HumanOracle();
+		ho = new HumanOracleWithoutWorldId();
 	}
 
 	function test_signUpWithWorldId() public {

@@ -2,13 +2,9 @@
 pragma solidity ^0.8.28;
 
 import {IWorldID} from "../lib/world-id-onchain-template/contracts/src/interfaces/IWorldID.sol";
-import {ByteHasher} from "./ByteHasher.sol";
 // import "forge-std/console.sol";
 
-contract HumanOracle {
-
-	using ByteHasher for bytes;
-
+contract HumanOracleWithoutWorldId {
 	// ====================
 	// ====== Structs =====
 	// ====================
@@ -41,7 +37,6 @@ contract HumanOracle {
 	// ====================
 
 	// public
-	IWorldID public worldId;
 	mapping (uint256 => Stake) public stakesForVoteIds;
 	mapping (address => User) public users;
 	Vote[] votes;
@@ -49,8 +44,6 @@ contract HumanOracle {
 	// private
 	mapping (uint256 => bool) private registeredNullifierHashes;
 	uint256 internal immutable groupId = 1;
-	uint256 internal immutable externalNullifierHash;
-
 
 	// ====================
 	// ====== Events ======
@@ -114,12 +107,6 @@ contract HumanOracle {
 	// === Constructor ====
 	// ====================
 
-	constructor(address _worldIdAddr, uint256 _groupId, string memory _appId, string memory _action) {
-		worldId = IWorldID(_worldIdAddr);
-		groupId = _groupId;
-		externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _action).hashToField();
-	}
-
 	// ====================
 	// ==== Functions =====
 	// ====================
@@ -128,19 +115,6 @@ contract HumanOracle {
 
 	function signUpWithWorldId(uint256 merkleRoot, uint256 nullifierHash, uint256[8] calldata proof) onlyNewUser() external {
 		address userAddr = address(msg.sender);
-
-		if (registeredNullifierHashes[nullifierHash] == true) {
-			revert ("nullifierHash already existing");
-		}
-		worldId.verifyProof(
-			merkleRoot,
-			groupId,
-			abi.encodePacked(userAddr).hashToField(),
-			nullifierHash,
-			externalNullifierHash,
-			proof
-		);
-		registeredNullifierHashes[nullifierHash] = true;
 
 		User memory newUser = User({
 			nullifierHash: nullifierHash,
