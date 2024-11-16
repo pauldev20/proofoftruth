@@ -289,7 +289,7 @@ const deployedContracts = {
   },
   480: {
     HumanOracle: {
-      address: "0x4f959689ee94f28698eb0b4f6a4477ff5dce3c73",
+      address: "0x909ebe9c98afa1a685603584ed2eea91a20d5311",
       abi: [
         {
           type: "constructor",
@@ -454,6 +454,11 @@ const deployedContracts = {
           type: "function",
           name: "hasUserVotedForVote",
           inputs: [
+            {
+              name: "userAddr",
+              type: "address",
+              internalType: "address",
+            },
             {
               name: "voteId",
               type: "uint256",

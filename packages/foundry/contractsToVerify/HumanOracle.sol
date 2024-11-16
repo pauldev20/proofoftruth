@@ -234,8 +234,7 @@ contract HumanOracle {
 		}
 	}
 
-	function hasUserVotedForVote(uint256 voteId) external view returns (bool) {
-		address userAddr = address(msg.sender);
+	function hasUserVotedForVote(address userAddr, uint256 voteId) external view returns (bool) {
 		uint256 answerCount = getStakeAnswerCount(voteId);
 		for (uint i = 0; i < answerCount; i++) {
 			if (hasUserVotedForStakeAnswer(userAddr, voteId, i)) {
