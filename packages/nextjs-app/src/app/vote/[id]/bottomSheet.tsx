@@ -25,13 +25,31 @@ export default function BottomSheet({ selected, loading, setLoading, refresher, 
         setLoading(true);
 
         try {
+            const deadline = Math.floor((Date.now() + 30 * 60 * 1000) / 1000).toString();
+
             const transactionResult = await MiniKit.commandsAsync.sendTransaction({
                 transaction: [
                     {
                         address: HumanOracle.address,
                         abi: HumanOracle.abi,
                         functionName: "submitVotingDecisionWithStake",
-                        args: [id, data.answers.findIndex(item => item.answer === selected) || 0, stakeFactor],
+                        args: [
+                            id,
+                            data.answers.findIndex(item => item.answer === selected) || 0,
+                            stakeFactor,
+                            "PERMIT2_SIGNATURE_PLACEHOLDER_0",
+                        ],
+                    },
+                ],
+                permit2: [
+                    {
+                        permitted: {
+                            token: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003",
+                            amount: "10000",
+                        },
+                        nonce: Date.now().toString(),
+                        deadline,
+                        spender: HumanOracle.address,
                     },
                 ],
             });

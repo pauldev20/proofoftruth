@@ -1,4 +1,4 @@
 export const appConfig = {
-    title: "WLD - MiniApp",
-    description: "WLD - MiniApp",
+    title: "ProofOfTruth",
+    description: "ProofOfTruth",
 };
