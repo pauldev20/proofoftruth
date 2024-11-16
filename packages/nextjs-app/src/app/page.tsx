@@ -56,7 +56,7 @@ export default function LoginPage() {
             const result = (await HumanOracle.read.isUserRegistered([MiniKit.walletAddress])) as boolean;
 
             /* ------- Step 2.5: Verify user and register if he is not registered ------- */
-            if (true || result == false) {
+            if (result == false) {
                 const verifyResult = await MiniKit.commandsAsync.verify({
                     action: "registration",
                     signal: MiniKit.walletAddress!,
@@ -68,7 +68,7 @@ export default function LoginPage() {
                 }
                 const verifySuccessResult = verifyResult.finalPayload as MiniAppVerifyActionSuccessPayload;
 
-                await new Promise(res => setTimeout(res, 2500)); // because of app bug
+                await new Promise(res => setTimeout(res, 3500)); // because of app bug
 
                 const transactionResult = await MiniKit.commandsAsync.sendTransaction({
                     transaction: [

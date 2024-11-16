@@ -17,9 +17,10 @@ import { worldchain } from "viem/chains";
 /*                               Initialization                               */
 /* -------------------------------------------------------------------------- */
 const chain = worldchain;
+const contractName = "HumanOracle";
 const rpcUrl = "https://worldchain-mainnet.g.alchemy.com/public";
 
-const humanOracleAbi = deployedContracts[chain.id].MockHumanOracle.abi;
+const humanOracleAbi = deployedContracts[chain.id][contractName].abi;
 
 /* -------------------------------------------------------------------------- */
 /*                               ContractContext                              */
@@ -45,7 +46,7 @@ export function ContractProvider({ children }: ContractProviderProps) {
         });
 
         return getContract({
-            address: deployedContracts[client.chain.id].MockHumanOracle.address as `0x${string}`,
+            address: deployedContracts[client.chain.id][contractName].address as `0x${string}`,
             abi: humanOracleAbi,
             client,
         });

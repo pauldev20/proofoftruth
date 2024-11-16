@@ -14,17 +14,14 @@ export const metadata: Metadata = {
         template: `%s - ${appConfig.title}`,
     },
     description: appConfig.description,
-    icons: {
-        icon: "/favicon.ico",
-    },
 };
 
-export const viewport: Viewport = {
-    themeColor: [
-        { media: "(prefers-color-scheme: light)", color: "white" },
-        { media: "(prefers-color-scheme: dark)", color: "black" },
-    ],
-};
+// export const viewport: Viewport = {
+//     themeColor: [
+//         { media: "(prefers-color-scheme: light)", color: "white" },
+//         { media: "(prefers-color-scheme: dark)", color: "black" },
+//     ],
+// };
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <html suppressHydrationWarning lang="en">
             <head />
             <body className={clsx("min-h-dvh bg-background touch-none", inter.className)}>
-                <NextProviders themeProps={{ attribute: "class", defaultTheme: "light" }}>
+                <NextProviders themeProps={{ attribute: "class", defaultTheme: "light", enableSystem: false }}>
                     <ContractProvider>
                         <ErudaProvider>
                             <MiniKitProvider>{children}</MiniKitProvider>
