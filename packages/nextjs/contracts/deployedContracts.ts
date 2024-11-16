@@ -290,7 +290,7 @@ const deployedContracts = {
   },
   480: {
     HumanOracleWithVault: {
-      address: "0x41c7f21d9e3936912f3c96ba8002bbfb1e57db90",
+      address: "0xc816bed45a8d368e37e79bd1409a529a76d67078",
       abi: [
         {
           type: "constructor",
@@ -426,6 +426,24 @@ const deployedContracts = {
               name: "signature",
               type: "bytes",
               internalType: "bytes",
+            },
+          ],
+          outputs: [],
+          stateMutability: "nonpayable",
+        },
+        {
+          type: "function",
+          name: "depositERC20Regular",
+          inputs: [
+            {
+              name: "token",
+              type: "address",
+              internalType: "contract IERC20",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              internalType: "uint256",
             },
           ],
           outputs: [],
@@ -836,6 +854,25 @@ const deployedContracts = {
         },
         {
           type: "event",
+          name: "Deposited",
+          inputs: [
+            {
+              name: "from",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
+          type: "event",
           name: "OwnershipTransferred",
           inputs: [
             {
@@ -966,6 +1003,25 @@ const deployedContracts = {
           anonymous: false,
         },
         {
+          type: "event",
+          name: "Withdrawn",
+          inputs: [
+            {
+              name: "to",
+              type: "address",
+              indexed: false,
+              internalType: "address",
+            },
+            {
+              name: "amount",
+              type: "uint256",
+              indexed: false,
+              internalType: "uint256",
+            },
+          ],
+          anonymous: false,
+        },
+        {
           type: "error",
           name: "OwnableInvalidOwner",
           inputs: [
@@ -991,6 +1047,7 @@ const deployedContracts = {
       inheritedFunctions: {
         PERMIT2: "contracts/Permit2Vault.sol",
         depositERC20: "contracts/Permit2Vault.sol",
+        depositERC20Regular: "contracts/Permit2Vault.sol",
         owner: "contracts/Permit2Vault.sol",
         renounceOwnership: "contracts/Permit2Vault.sol",
         rescueTokens: "contracts/Permit2Vault.sol",
