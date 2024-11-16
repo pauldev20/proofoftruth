@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
 
-// Useful for debugging. Remove when deploying to a live network.
-import "forge-std/console.sol";
+import { IDKitWidget } from '@worldcoin/idkit';
+// import "forge-std/console.sol";
 
 contract HumanOracle {
 	// ====================
@@ -36,9 +36,13 @@ contract HumanOracle {
 	// ==== Variables =====
 	// ====================
 
+	// public
 	mapping (uint256 => Stake) public stakesForVoteIds;
 	mapping (address => User) public users;
 	Vote[] votes;
+
+	// private
+	mapping (uint256 => bool) private nullifierHashes;
 
 	// ====================
 	// ====== Events ======
@@ -102,6 +106,10 @@ contract HumanOracle {
 	// === Constructor ====
 	// ====================
 
+	constructor(address worldIdRouterAddr) public {
+
+	}
+
 	// ====================
 	// ==== Functions =====
 	// ====================
@@ -110,6 +118,20 @@ contract HumanOracle {
 
 	function signUpWithWorldId(uint256 merkleRoot, uint256 nullifierHash, uint256[8] calldata proof) onlyNewUser() external {
 		address userAddr = address(msg.sender);
+
+		if (nullifierHashes[nullifierHash] == true) {
+			revert ("nullifierHash already existing");
+		}
+		worldIdRouter.verifyProof(
+			merkleRoot,
+			groupId, // set to "1" in the constructor
+			abi.encodePacked(userAddr).hashToField(),
+			nullifierHash,
+			externalNullifierHash,
+			proof
+		);
+		nullifierHashes[nullifierHash] = true;
+
 		User memory newUser = User({
 			nullifierHash: nullifierHash,
 			createdAtBlock: block.number
@@ -213,14 +235,10 @@ contract HumanOracle {
 		uint256 highestStakeAnswerIndex = getStakeHighestAnswerIndex(voteId);
 		if (!hasUserVotedForStakeAnswer(userAddr, voteId, highestStakeAnswerIndex)) {
 			return 0;
-			// revert("user has not won");
 		}
 		uint256 userStake = getUserStakeOfStakeAnswer(userAddr, voteId, highestStakeAnswerIndex);
-		console.log(userStake, "getUserStakeOfStakeAnswer");
 		uint256 totalStake = getStakeTotalStake(voteId);
-		console.log(totalStake, "getStakeTotalStake");
 		uint256 answerStake = getStakeAnswerStake(voteId, highestStakeAnswerIndex);
-		console.log(answerStake, "getStakeAnswerStake");
 		uint256 userPayout = totalStake / answerStake * userStake;
 		return userPayout;
 	}
