@@ -289,19 +289,14 @@ const deployedContracts = {
     },
   },
   480: {
-    HumanOracleWithVault: {
-      address: "0xc816bed45a8d368e37e79bd1409a529a76d67078",
+    HumanOracle: {
+      address: "0xc7e333967bf5da055f2fa058383f990c446cb256",
       abi: [
         {
           type: "constructor",
           inputs: [
             {
               name: "_worldIdAddr",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "_worldTokenAddr",
               type: "address",
               internalType: "address",
             },
@@ -320,31 +315,8 @@ const deployedContracts = {
               type: "string",
               internalType: "string",
             },
-            {
-              name: "_permit",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "_owner",
-              type: "address",
-              internalType: "address",
-            },
           ],
           stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "PERMIT2",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "contract IPermit2",
-            },
-          ],
-          stateMutability: "view",
         },
         {
           type: "function",
@@ -391,57 +363,6 @@ const deployedContracts = {
             },
             {
               name: "bounty",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "depositERC20",
-          inputs: [
-            {
-              name: "token",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "nonce",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "deadline",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "signature",
-              type: "bytes",
-              internalType: "bytes",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "depositERC20Regular",
-          inputs: [
-            {
-              name: "token",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-            {
-              name: "amount",
               type: "uint256",
               internalType: "uint256",
             },
@@ -618,44 +539,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "owner",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "renounceOwnership",
-          inputs: [],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "rescueTokens",
-          inputs: [
-            {
-              name: "token",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-            {
-              name: "recipient",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "signUpWithWorldId",
           inputs: [
             {
@@ -715,71 +598,6 @@ const deployedContracts = {
               type: "uint256",
               internalType: "uint256",
             },
-            {
-              name: "nonce",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "deadline",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "signature",
-              type: "bytes",
-              internalType: "bytes",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "tokenBalancesByUser",
-          inputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "totalBalance",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "transferOwnership",
-          inputs: [
-            {
-              name: "newOwner",
-              type: "address",
-              internalType: "address",
-            },
           ],
           outputs: [],
           stateMutability: "nonpayable",
@@ -810,24 +628,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "withdrawERC20",
-          inputs: [
-            {
-              name: "token",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "worldId",
           inputs: [],
           outputs: [
@@ -838,57 +638,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "worldToken",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "event",
-          name: "Deposited",
-          inputs: [
-            {
-              name: "from",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "event",
-          name: "OwnershipTransferred",
-          inputs: [
-            {
-              name: "previousOwner",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-            {
-              name: "newOwner",
-              type: "address",
-              indexed: true,
-              internalType: "address",
-            },
-          ],
-          anonymous: false,
         },
         {
           type: "event",
@@ -1002,60 +751,8 @@ const deployedContracts = {
           ],
           anonymous: false,
         },
-        {
-          type: "event",
-          name: "Withdrawn",
-          inputs: [
-            {
-              name: "to",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
-        {
-          type: "error",
-          name: "OwnableInvalidOwner",
-          inputs: [
-            {
-              name: "owner",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-        },
-        {
-          type: "error",
-          name: "OwnableUnauthorizedAccount",
-          inputs: [
-            {
-              name: "account",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-        },
       ],
-      inheritedFunctions: {
-        PERMIT2: "contracts/Permit2Vault.sol",
-        depositERC20: "contracts/Permit2Vault.sol",
-        depositERC20Regular: "contracts/Permit2Vault.sol",
-        owner: "contracts/Permit2Vault.sol",
-        renounceOwnership: "contracts/Permit2Vault.sol",
-        rescueTokens: "contracts/Permit2Vault.sol",
-        tokenBalancesByUser: "contracts/Permit2Vault.sol",
-        totalBalance: "contracts/Permit2Vault.sol",
-        transferOwnership: "contracts/Permit2Vault.sol",
-        withdrawERC20: "contracts/Permit2Vault.sol",
-      },
+      inheritedFunctions: {},
     },
   },
   4801: {
