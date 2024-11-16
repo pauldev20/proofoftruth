@@ -7,17 +7,15 @@ import { waitOnTransaction } from "@/lib/miniKit";
 import { useContractContext } from "@/providers/contractProvider";
 import { Button } from "@nextui-org/button";
 import { MiniAppVerifyActionSuccessPayload, MiniKit, VerificationLevel } from "@worldcoin/minikit-js";
-import { decodeAbiParameters } from "viem";
 import { ethers } from "ethers";
+import { decodeAbiParameters } from "viem";
 
-const encodeWldData = (signal: string, merkleRoot: string, nullifierHash: string, proof: string): string => {
-	return new ethers.AbiCoder().encode(["address", "uint256", "uint256", "uint256[8]"], [
-		signal,
-		merkleRoot,
-		nullifierHash,
-		new ethers.AbiCoder().decode(["uint256[8]"], proof)[0]
-	]);
-}
+const encodeWldData = (merkleRoot: string, nullifierHash: string, proof: string): string => {
+    return new ethers.AbiCoder().encode(
+        ["uint256", "uint256", "uint256[8]"],
+        [merkleRoot, nullifierHash, new ethers.AbiCoder().decode(["uint256[8]"], proof)[0]],
+    );
+};
 
 /* -------------------------------------------------------------------------- */
 /*                                    Page                                    */
@@ -84,6 +82,12 @@ export default function LoginPage() {
 
                 await new Promise(res => setTimeout(res, 4000)); // because of app bug
 
+                const encoded = encodeWldData(
+                    verifySuccessResult.merkle_root,
+                    verifySuccessResult.nullifier_hash,
+                    verifySuccessResult.proof,
+                );
+
                 const transactionResult = await MiniKit.commandsAsync.sendTransaction({
                     transaction: [
                         {
@@ -91,12 +95,13 @@ export default function LoginPage() {
                             abi: HumanOracle.abi,
                             functionName: "signUpWithWorldId",
                             args: [
-                                verifySuccessResult.merkle_root,
-                                verifySuccessResult.nullifier_hash,
-                                decodeAbiParameters(
-                                    [{ type: "uint256[8]" }],
-                                    verifySuccessResult.proof as `0x${string}`,
-                                )[0].map((value: bigint) => `0x${value.toString(16).padStart(64, "0")}`),
+                                encoded,
+                                // verifySuccessResult.merkle_root,
+                                // verifySuccessResult.nullifier_hash,
+                                // decodeAbiParameters(
+                                //     [{ type: "uint256[8]" }],
+                                //     verifySuccessResult.proof as `0x${string}`,
+                                // )[0].map((value: bigint) => `0x${value.toString(16).padStart(64, "0")}`),
                             ],
                         },
                     ],
