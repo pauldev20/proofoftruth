@@ -1,23 +1,16 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import {IWorldID} from "./IWorldID.sol";
+import {IWorldID} from "../lib/world-id-onchain-template/contracts/src/interfaces/IWorldID.sol";
+import {WorldIdRegister} from "./WorldIdRegister.sol";
 import {ByteHasher} from "./ByteHasher.sol";
-import {WorldIDregister} from "."
 // import "forge-std/console.sol";
 
-contract HumanOracle is {
-
-	using ByteHasher for bytes;
+contract HumanOracleWithWorldIdRegister is WorldIdRegister {
 
 	// ====================
 	// ====== Structs =====
 	// ====================
-
-	struct User {
-		uint256 nullifierHash;
-		uint256 createdAtBlock;
-	}
 
 	struct Option {
 		uint256                      totalStake;
@@ -43,22 +36,16 @@ contract HumanOracle is {
 	// ====================
 
 	// public
-	IWorldID public worldId;
 	mapping (uint256 => Stake) public stakesForVoteIds;
-	mapping (address => User) public users;
 	Vote[] votes;
 
 	// private
 	mapping (uint256 => bool) private registeredNullifierHashes;
-	uint256 internal immutable groupId = 1;
-	uint256 internal immutable externalNullifierHash;
 
 
 	// ====================
 	// ====== Events ======
 	// ====================
-
-	event UserRegistered(address indexed user, uint256 nullifierHash, uint256 createdAtBlock);
 
 	event VoteCreated(uint256 indexed voteId, string question, uint256 startBlock, uint256 durationInBlocks);
 
@@ -69,11 +56,6 @@ contract HumanOracle is {
 	// ====================
 	// ==== Modifiers =====
 	// ====================
-
-	modifier onlyNewUser() {
-		require(users[msg.sender].nullifierHash == uint256(0), "user already signed up");
-		_;
-	}
 
 	modifier hasNotVoted(uint256 voteId) {
 		uint256 answerCount = getStakeAnswerCount(voteId);
@@ -117,10 +99,7 @@ contract HumanOracle is {
 	// === Constructor ====
 	// ====================
 
-	constructor(address _worldIdAddr, uint256 _groupId, string memory _appId, string memory _action) {
-		worldId = IWorldID(_worldIdAddr);
-		groupId = _groupId;
-		externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _action).hashToField();
+	constructor(address _worldIdAddr, uint256 _groupId, string memory _appId, string memory _action) WorldIdRegister(_worldIdAddr, _groupId, _appId, _action) {
 	}
 
 	// ====================
@@ -128,30 +107,6 @@ contract HumanOracle is {
 	// ====================
 
 	// external
-
-	function signUpWithWorldId(uint256 merkleRoot, uint256 nullifierHash, uint256[8] calldata proof) onlyNewUser() external {
-		address userAddr = address(msg.sender);
-
-		if (registeredNullifierHashes[nullifierHash] == true) {
-			revert ("nullifierHash already existing");
-		}
-		worldId.verifyProof(
-			merkleRoot,
-			groupId,
-			abi.encodePacked(userAddr).hashToField(),
-			nullifierHash,
-			externalNullifierHash,
-			proof
-		);
-		registeredNullifierHashes[nullifierHash] = true;
-
-		User memory newUser = User({
-			nullifierHash: nullifierHash,
-			createdAtBlock: block.number
-		});
-		users[userAddr] = newUser;
-		emit UserRegistered(userAddr, users[userAddr].nullifierHash, users[userAddr].createdAtBlock);
-	}
 
 	function submitVotingDecisionWithStake(uint256 voteId, uint256 answerIndex, uint256 amount) userExists() hasNotVoted(voteId) voteActive(voteId) external {
 		require(amount <= 5, "max staking amount is 5");

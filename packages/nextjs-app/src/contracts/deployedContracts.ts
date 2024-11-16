@@ -288,19 +288,14 @@ const deployedContracts = {
     },
   },
   480: {
-    HumanOracleWithVault: {
-      address: "0xb243e151dbb03cccbd15334c8fc14ff99333ac0a",
+    HumanOracleWithWorldIdRegister: {
+      address: "0x5d3ea2d21cd19deaaebcb9a9eb8acd708e2dea2f",
       abi: [
         {
           type: "constructor",
           inputs: [
             {
               name: "_worldIdAddr",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "_worldTokenAddr",
               type: "address",
               internalType: "address",
             },
@@ -319,31 +314,8 @@ const deployedContracts = {
               type: "string",
               internalType: "string",
             },
-            {
-              name: "_permit",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "_owner",
-              type: "address",
-              internalType: "address",
-            },
           ],
           stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "PERMIT2",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "contract IPermit2",
-            },
-          ],
-          stateMutability: "view",
         },
         {
           type: "function",
@@ -390,57 +362,6 @@ const deployedContracts = {
             },
             {
               name: "bounty",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "depositERC20",
-          inputs: [
-            {
-              name: "token",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "nonce",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "deadline",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "signature",
-              type: "bytes",
-              internalType: "bytes",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "depositERC20Regular",
-          inputs: [
-            {
-              name: "token",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-            {
-              name: "amount",
               type: "uint256",
               internalType: "uint256",
             },
@@ -617,24 +538,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "rescueTokens",
-          inputs: [
-            {
-              name: "token",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-            {
-              name: "recipient",
-              type: "address",
-              internalType: "address",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "signUpWithWorldId",
           inputs: [
             {
@@ -684,61 +587,9 @@ const deployedContracts = {
               type: "uint256",
               internalType: "uint256",
             },
-            {
-              name: "nonce",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "deadline",
-              type: "uint256",
-              internalType: "uint256",
-            },
-            {
-              name: "signature",
-              type: "bytes",
-              internalType: "bytes",
-            },
           ],
           outputs: [],
           stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "tokenBalancesByUser",
-          inputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "address",
-            },
-            {
-              name: "",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-          ],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "totalBalance",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          stateMutability: "view",
         },
         {
           type: "function",
@@ -766,24 +617,6 @@ const deployedContracts = {
         },
         {
           type: "function",
-          name: "withdrawERC20",
-          inputs: [
-            {
-              name: "token",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
           name: "worldId",
           inputs: [],
           outputs: [
@@ -794,38 +627,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "view",
-        },
-        {
-          type: "function",
-          name: "worldToken",
-          inputs: [],
-          outputs: [
-            {
-              name: "",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-          ],
-          stateMutability: "view",
-        },
-        {
-          type: "event",
-          name: "Deposited",
-          inputs: [
-            {
-              name: "from",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-          ],
-          anonymous: false,
         },
         {
           type: "event",
@@ -939,34 +740,11 @@ const deployedContracts = {
           ],
           anonymous: false,
         },
-        {
-          type: "event",
-          name: "Withdrawn",
-          inputs: [
-            {
-              name: "to",
-              type: "address",
-              indexed: false,
-              internalType: "address",
-            },
-            {
-              name: "amount",
-              type: "uint256",
-              indexed: false,
-              internalType: "uint256",
-            },
-          ],
-          anonymous: false,
-        },
       ],
       inheritedFunctions: {
-        PERMIT2: "contracts/Permit2Vault.sol",
-        depositERC20: "contracts/Permit2Vault.sol",
-        depositERC20Regular: "contracts/Permit2Vault.sol",
-        rescueTokens: "contracts/Permit2Vault.sol",
-        tokenBalancesByUser: "contracts/Permit2Vault.sol",
-        totalBalance: "contracts/Permit2Vault.sol",
-        withdrawERC20: "contracts/Permit2Vault.sol",
+        signUpWithWorldId: "contracts/WorldIdRegister.sol",
+        users: "contracts/WorldIdRegister.sol",
+        worldId: "contracts/WorldIdRegister.sol",
       },
     },
   },
