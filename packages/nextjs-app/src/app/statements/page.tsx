@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/navbar";
 import StatementItem from "@/components/statementItem";
-import deployedContracts from "@/contracts/deployedContracts";
+import { useContractContext } from "@/providers/contractProvider";
 import { Input } from "@nextui-org/input";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
-import { createPublicClient, getContract, http } from "viem";
-import { worldchain } from "viem/chains";
+import { Spinner } from "@nextui-org/spinner";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 interface AddressComponentProps {
@@ -38,23 +37,14 @@ type Statement = {
 };
 
 export default function HomePage() {
-    const [statements, setStatements] = useState<Statement[]>([]);
+    const [statements, setStatements] = useState<Statement[] | null>(null);
     const [results, setResults] = useState<Statement[]>([]);
+    const { HumanOracle } = useContractContext();
     const router = useRouter();
 
     useEffect(() => {
-        const client = createPublicClient({
-            chain: worldchain,
-            transport: http("https://worldchain-mainnet.g.alchemy.com/public"),
-        });
-        const HumanOrcale = getContract({
-            address: deployedContracts[client.chain.id].MockHumanOracle.address as `0x${string}`,
-            abi: deployedContracts[client.chain.id].MockHumanOracle.abi,
-            client,
-        });
-
         (async () => {
-            const input = (await HumanOrcale.read.getVotingList()) as Array<Array<unknown>>;
+            const input = (await HumanOracle.read.getVotingList()) as Array<Array<unknown>>;
             const result = input[0].map(
                 (id, index) =>
                     ({
@@ -68,6 +58,14 @@ export default function HomePage() {
             setResults(result);
         })();
     }, []);
+
+    if (!statements) {
+        return (
+            <section className="h-dvh flex flex-col items-center justify-center">
+                <Spinner size="lg" />
+            </section>
+        );
+    }
 
     return (
         <section className="h-dvh flex flex-col items-center">

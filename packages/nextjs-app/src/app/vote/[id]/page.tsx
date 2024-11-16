@@ -4,37 +4,36 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import IconButton from "@/components/iconButton";
 import Navbar from "@/components/navbar";
-import deployedContracts from "@/contracts/deployedContracts";
+import { useContractContext } from "@/providers/contractProvider";
 import { Button } from "@nextui-org/button";
 import { Radio, RadioGroup } from "@nextui-org/radio";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { Slider } from "@nextui-org/slider";
 import { Spinner } from "@nextui-org/spinner";
-import { createPublicClient, getContract, http } from "viem";
-import { worldchain } from "viem/chains";
-import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { cn } from "@nextui-org/theme";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 
 interface CustomRadioProps {
     children: React.ReactNode;
     value: string;
 }
-function CustomRadio({ children, value, ...otherProps }: CustomRadioProps) {  
+function CustomRadio({ children, value, ...otherProps }: CustomRadioProps) {
     return (
-      <Radio
-        {...otherProps}
-        value={value}
-        classNames={{
-          base: cn(
-            "inline-flex m-0 bg-content1 hover:bg-content2 items-center justify-between",
-            "flex-row-reverse max-w-[300px] cursor-pointer rounded-lg gap-4 p-4 border-2 border-transparent"
-          )
-        }}
-      >
-        {children}
-      </Radio>
+        <Radio
+            {...otherProps}
+            value={value}
+            classNames={{
+                base: cn(
+                    "inline-flex m-0 bg-content2 hover:bg-gray-200 items-center justify-between",
+                    "flex-row-reverse max-w-full cursor-pointer rounded-lg gap-4 p-4 border-2 border-transparent",
+                    "transition transition-background duration-300",
+                ),
+            }}
+        >
+            {children}
+        </Radio>
     );
-};
+}
 
 type Statement = {
     statement: string;
@@ -55,7 +54,7 @@ function convertData(input: unknown): Statement {
 
     return {
         statement: statement,
-        answers: answersWithStakes,
+        answers: answersWithStakes.concat(answersWithStakes).concat(answersWithStakes),
         totalStake: Number(totalStake),
     };
 }
@@ -67,21 +66,12 @@ export default function VotePage({ params }: VotePageProps) {
     const [selected, setSelected] = useState<string | null>(null);
     const [data, setData] = useState<Statement | null>(null);
     const [stakeFactor, setStakeFactor] = useState(1);
+    const { HumanOracle } = useContractContext();
     const router = useRouter();
 
     useEffect(() => {
         (async () => {
-            const client = createPublicClient({
-                chain: worldchain,
-                transport: http("https://worldchain-mainnet.g.alchemy.com/public"),
-            });
-            const HumanOrcale = getContract({
-                address: deployedContracts[client.chain.id].MockHumanOracle.address as `0x${string}`,
-                abi: deployedContracts[client.chain.id].MockHumanOracle.abi,
-                client,
-            });
-
-            setData(convertData(await HumanOrcale.read.getVotingPage([params.id])));
+            setData(convertData(await HumanOracle.read.getVotingPage([params.id])));
         })();
     }, []);
 
@@ -94,19 +84,19 @@ export default function VotePage({ params }: VotePageProps) {
     }
 
     return (
-        <section className="h-dvh flex flex-col">
+        <section className="h-dvh flex flex-col bg-gr">
             <Navbar
                 startContent={
                     <IconButton icon={<ChevronLeftIcon className="size-7" onClick={() => router.back()} />} />
                 }
             />
-            <div className="w-full p-5 pt-6 pb-10">
-                <h1 className="text-2xl font-bold text-center">{data.statement}</h1>
-                <p className="text-sm text-center opacity-50">
+            <div className="w-full p-5 pt-6 pb-6">
+                <h1 className="text-3xl font-bold text-center">{data.statement}</h1>
+                <p className="text-center opacity-50">
                     {data.totalStake} <span className="font-bold">WLD</span>
                 </p>
             </div>
-            <RadioGroup value={selected} onValueChange={setSelected} label="Answers" className="w-full px-2">
+            <RadioGroup value={selected} onValueChange={setSelected} className="w-full px-2">
                 <ScrollShadow hideScrollBar className="w-full gap-3 grid py-5 px-3">
                     {data.answers.map((answer, index) => (
                         <CustomRadio key={index} value={answer.answer}>
@@ -115,7 +105,10 @@ export default function VotePage({ params }: VotePageProps) {
                     ))}
                 </ScrollShadow>
             </RadioGroup>
-            <div className="w-full flex flex-col items-center gap-2 p-3 mt-auto">
+            <div
+                className="w-full flex flex-col items-center gap-2 p-3 py-7 mt-auto rounded-t-lg"
+                style={{ boxShadow: "0 -4px 6px -2px rgba(0, 0, 0, 0.1)" }}
+            >
                 <Slider
                     size="md"
                     step={1}
@@ -138,10 +131,13 @@ export default function VotePage({ params }: VotePageProps) {
                     </Button>
                     <p className="text-xs text-center">
                         Current Possible Return:{" "}
-                        {selected ? (
-                            (data.totalStake / (data.answers.find(item => item.answer === selected)?.stake || 0)) *
-                            stakeFactor
-                        ).toPrecision(3) : "---"}{" "}
+                        {selected
+                            ? (
+                                  (data.totalStake /
+                                      (data.answers.find(item => item.answer === selected)?.stake || 0)) *
+                                  stakeFactor
+                              ).toPrecision(3)
+                            : "---"}{" "}
                         <span className="font-bold">WLD</span>
                     </p>
                 </div>

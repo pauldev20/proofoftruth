@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import deployedContracts from "@/contracts/deployedContracts";
+import { useContractContext } from "@/providers/contractProvider";
 import { Button } from "@nextui-org/button";
 import { MiniAppVerifyActionSuccessPayload, MiniKit, VerificationLevel } from "@worldcoin/minikit-js";
-import { createPublicClient, decodeAbiParameters, getContract, http } from "viem";
-import { worldchain } from "viem/chains";
+import { decodeAbiParameters } from "viem";
 
 export interface TransactionStatus {
     transactionHash: `0x${string}`;
@@ -33,20 +32,11 @@ async function waitOnTransaction(transactionId: string): Promise<TransactionStat
 
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
+    const { HumanOracle } = useContractContext();
     const router = useRouter();
 
     const onLoginSignup = async () => {
         setLoading(true);
-
-        const client = createPublicClient({
-            chain: worldchain,
-            transport: http("https://worldchain-mainnet.g.alchemy.com/public"),
-        });
-        const HumanOrcale = getContract({
-            address: deployedContracts[client.chain.id].MockHumanOracle.address as `0x${string}`,
-            abi: deployedContracts[client.chain.id].MockHumanOracle.abi,
-            client,
-        });
 
         // get wallet auth
         try {
@@ -85,7 +75,7 @@ export default function LoginPage() {
 
         // check if registered and register if not
         try {
-            const result = (await HumanOrcale.read.isUserRegistered([MiniKit.walletAddress])) as boolean;
+            const result = (await HumanOracle.read.isUserRegistered([MiniKit.walletAddress])) as boolean;
 
             if (result == false) {
                 const verifyResult = await MiniKit.commandsAsync.verify({
@@ -104,8 +94,8 @@ export default function LoginPage() {
                 const transactionResult = await MiniKit.commandsAsync.sendTransaction({
                     transaction: [
                         {
-                            address: HumanOrcale.address,
-                            abi: HumanOrcale.abi,
+                            address: HumanOracle.address,
+                            abi: HumanOracle.abi,
                             functionName: "signUpWithWorldId",
                             args: [
                                 verifySuccessResult.merkle_root,

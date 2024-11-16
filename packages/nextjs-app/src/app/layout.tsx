@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import { NextProviders } from "../providers/nextUiProvider";
 import { appConfig } from "@/appConfig";
+import { ContractProvider } from "@/providers/contractProvider";
 import { ErudaProvider } from "@/providers/eruda";
 import { MiniKitProvider } from "@/providers/miniKitProvider";
 import "@/styles/globals.css";
@@ -33,9 +34,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <head />
             <body className={clsx("min-h-dvh bg-background touch-none", inter.className)}>
                 <NextProviders themeProps={{ attribute: "class", defaultTheme: "light" }}>
-                    <ErudaProvider>
-                        <MiniKitProvider>{children}</MiniKitProvider>
-                    </ErudaProvider>
+                    <ContractProvider>
+                        <ErudaProvider>
+                            <MiniKitProvider>{children}</MiniKitProvider>
+                        </ErudaProvider>
+                    </ContractProvider>
                 </NextProviders>
             </body>
         </html>
