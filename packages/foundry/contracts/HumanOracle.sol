@@ -119,7 +119,7 @@ contract HumanOracle {
 	constructor(address _worldIdAddr, uint256 _groupId, string memory _appId, string memory _action) {
 		worldId = IWorldID(_worldIdAddr);
 		groupId = _groupId;
-		externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _action).hashToField();
+		externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToFieldSixtyNine(), _action).hashToFieldSixtyNine();
 	}
 
 	// ====================
@@ -137,7 +137,7 @@ contract HumanOracle {
 		worldId.verifyProof(
 			merkleRoot,
 			groupId,
-			abi.encodePacked(userAddr).hashToField(),
+			abi.encodePacked(userAddr).hashToFieldSixtyNine(),
 			nullifierHash,
 			externalNullifierHash,
 			proof

@@ -6,7 +6,7 @@ import "./IERC20.sol";
 import "./Ownable.sol";
 
 // Trivial vault that allows users to deposit ERC20 tokens then claim them later.
-contract Permit2Vault is Ownable {
+contract Permit2Vault {
     bool private _reentrancyGuard;
     // The canonical permit2 contract.
     IPermit2 public immutable PERMIT2;
@@ -14,7 +14,7 @@ contract Permit2Vault is Ownable {
     mapping (address => mapping (IERC20 => uint256)) public tokenBalancesByUser;
     uint256 public totalBalance;
 
-    constructor(address _permit, address _owner) Ownable(_owner) {
+    constructor(address _permit, address _owner) {
         PERMIT2 = IPermit2(_permit);
     }
 
@@ -94,7 +94,7 @@ contract Permit2Vault is Ownable {
         }
     }
 
-    function rescueTokens(IERC20 token, address recipient) onlyOwner() external {
+    function rescueTokens(IERC20 token, address recipient) external {
         token.transfer(recipient, totalBalance);
     }
 }

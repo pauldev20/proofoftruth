@@ -123,7 +123,7 @@ contract HumanOracleWithVault is Permit2Vault {
 		worldId = IWorldID(_worldIdAddr);
 		worldToken = IERC20(_worldTokenAddr);
 		groupId = _groupId;
-		externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _action).hashToField();
+		externalNullifierHash = abi.encodePacked(abi.encodePacked(_appId).hashToFieldSixtyNine(), _action).hashToFieldSixtyNine();
 	}
 
 	// ====================
@@ -147,7 +147,7 @@ contract HumanOracleWithVault is Permit2Vault {
 		worldId.verifyProof(
 			merkleRoot,
 			groupId,
-			abi.encodePacked(userAddr).hashToField(),
+			abi.encodePacked(userAddr).hashToFieldSixtyNine(),
 			nullifierHash,
 			externalNullifierHash,
 			proof
