@@ -5,7 +5,7 @@ import "../interfaces/IPermit2.sol";
 import "../interfaces/IERC20.sol";
 
 // Trivial vault that allows users to deposit ERC20 tokens then claim them later.
-contract Permit2Vault {
+contract Permit2Vault is Ownable {
     bool private _reentrancyGuard;
     // The canonical permit2 contract.
     IPermit2 public immutable PERMIT2;
@@ -51,47 +51,6 @@ contract Permit2Vault {
                 to: address(this),
                 requestedAmount: amount
             }),
-            // The owner of the tokens, which must also be
-            // the signer of the message, otherwise this call
-            // will fail.
-            msg.sender,
-            // The packed signature that was the result of signing
-            // the EIP712 hash of `permit`.
-            signature
-        );
-    }
-
-    // Deposit multiple ERC20 tokens from the caller
-    // into this contract using Permit2.
-    function depositBatchERC20(
-        IERC20[] calldata tokens,
-        uint256[] calldata amounts,
-        uint256 nonce,
-        uint256 deadline,
-        bytes calldata signature
-    ) external nonReentrant {
-        require(tokens.length == amounts.length, 'array mismatch');
-        // The batch form of `permitTransferFrom()` takes an array of
-        // transfer details, which we will all direct to ourselves.
-        IPermit2.SignatureTransferDetails[] memory transferDetails =
-            new IPermit2.SignatureTransferDetails[](tokens.length);
-        // Credit the caller and populate the transferDetails.
-        for (uint256 i; i < tokens.length; ++i) {
-            tokenBalancesByUser[msg.sender][tokens[i]] += amounts[i];
-            transferDetails[i] = IPermit2.SignatureTransferDetails({
-                to: address(this),
-                requestedAmount: amounts[i]
-            });
-        }
-        PERMIT2.permitTransferFrom(
-            // The permit message. Spender will be inferred as the caller (us).
-            IPermit2.PermitBatchTransferFrom({
-                permitted: _toTokenPermissionsArray(tokens, amounts),
-                nonce: nonce,
-                deadline: deadline
-            }),
-            // The transfer recipients and amounts.
-            transferDetails,
             // The owner of the tokens, which must also be
             // the signer of the message, otherwise this call
             // will fail.
