@@ -32,6 +32,7 @@ contract Permit2Vault {
     // Deposit some amount of an ERC20 token from the caller
     // into this contract using Permit2.
     function depositERC20(
+        address userAddr,
         IERC20 token,
         uint256 amount,
         uint256 nonce,
@@ -39,7 +40,7 @@ contract Permit2Vault {
         bytes calldata signature
     ) external nonReentrant {
         // Credit the caller.
-        tokenBalancesByUser[msg.sender][token] += amount;
+        tokenBalancesByUser[userAddr][token] += amount;
         totalBalance += amount;
         // Transfer tokens from the caller to ourselves.
         PERMIT2.permitTransferFrom(
@@ -60,29 +61,30 @@ contract Permit2Vault {
             // The owner of the tokens, which must also be
             // the signer of the message, otherwise this call
             // will fail.
-            msg.sender,
+            userAddr,
             // The packed signature that was the result of signing
             // the EIP712 hash of `permit`.
             signature
         );
-        emit Deposited(address(msg.sender), amount);
+
+        emit Deposited(userAddr, amount);
     }
 
-    function depositERC20Regular(IERC20 token, uint256 amount) external {
-        tokenBalancesByUser[msg.sender][token] += amount;
+    function depositERC20Regular(address userAddr, IERC20 token, uint256 amount) external {
+        tokenBalancesByUser[userAddr][token] += amount;
         totalBalance += amount;
-        token.transfer(address(this), amount);
-        emit Deposited(address(msg.sender), amount);
+        token.transferFrom(userAddr, address(this), amount);
+        emit Deposited(userAddr, amount);
     }
 
     // Return ERC20 tokens deposited by the caller.
-    function withdrawERC20(IERC20 token, uint256 amount) external nonReentrant {
-        tokenBalancesByUser[msg.sender][token] -= amount;
+    function withdrawERC20(address userAddr, IERC20 token, uint256 amount) external nonReentrant {
+        tokenBalancesByUser[userAddr][token] -= amount;
         totalBalance -= amount;
         // TODO: In production, use an ERC20 compatibility library to
         // execute thie transfer to support non-compliant tokens.
-        token.transfer(msg.sender, amount);
-        emit Withdrawn(msg.sender, amount);
+        token.transfer(userAddr, amount);
+        emit Withdrawn(userAddr, amount);
     }
 
     function _toTokenPermissionsArray(IERC20[] calldata tokens, uint256[] calldata amounts)
@@ -94,7 +96,7 @@ contract Permit2Vault {
         }
     }
 
-    function rescueTokens(IERC20 token, address recipient) external {
-        token.transfer(recipient, totalBalance);
-    }
+    // function rescueTokens(IERC20 token, address recipient) external {
+    //     token.transfer(recipient, totalBalance);
+    // }
 }

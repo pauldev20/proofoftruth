@@ -32,6 +32,7 @@ contract Permit2Vault {
     // Deposit some amount of an ERC20 token from the caller
     // into this contract using Permit2.
     function depositERC20(
+        address userAddr,
         IERC20 token,
         uint256 amount,
         uint256 nonce,
@@ -68,15 +69,15 @@ contract Permit2Vault {
         emit Deposited(address(msg.sender), amount);
     }
 
-    function depositERC20Regular(IERC20 token, uint256 amount) external {
-        tokenBalancesByUser[msg.sender][token] += amount;
+    function depositERC20Regular(address userAddr, IERC20 token, uint256 amount) external {
+        tokenBalancesByUser[address(tx.origin)][token] += amount;
         totalBalance += amount;
         token.transfer(address(this), amount);
         emit Deposited(address(msg.sender), amount);
     }
 
     // Return ERC20 tokens deposited by the caller.
-    function withdrawERC20(IERC20 token, uint256 amount) external nonReentrant {
+    function withdrawERC20(address userAddr, IERC20 token, uint256 amount) external nonReentrant {
         tokenBalancesByUser[msg.sender][token] -= amount;
         totalBalance -= amount;
         // TODO: In production, use an ERC20 compatibility library to
@@ -94,7 +95,7 @@ contract Permit2Vault {
         }
     }
 
-    function rescueTokens(IERC20 token, address recipient) external {
-        token.transfer(recipient, totalBalance);
-    }
+    // function rescueTokens(IERC20 token, address recipient) external {
+    //     token.transfer(recipient, totalBalance);
+    // }
 }

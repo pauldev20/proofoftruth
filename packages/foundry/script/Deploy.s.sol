@@ -4,7 +4,6 @@ pragma solidity ^0.8.19;
 import "./DeployHelpers.s.sol";
 import { DeployMockHumanOracle } from "./DeployMockHumanOracle.s.sol";
 import { DeployHumanOracle } from "./DeployHumanOracle.s.sol";
-import { DeployHumanOracleWithVault } from "./DeployHumanOracleWithVault.s.sol";
 import { DeployWorldIDRegister } from "./DeployWorldIDRegister.s.sol";
 import { DeployHumanOracleV1 } from "./DeployHumanOracleV1.s.sol";
 

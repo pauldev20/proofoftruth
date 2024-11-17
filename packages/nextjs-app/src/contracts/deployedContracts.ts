@@ -289,7 +289,7 @@ const deployedContracts = {
   },
   480: {
     Permit2Vault: {
-      address: "0x29c4b679f04c0a86983b19380766d3b0ca679a59",
+      address: "0x3845eb1554913bdbd58f7c7cdedc45f03a1e54fd",
       abi: [
         {
           type: "constructor",
@@ -325,6 +325,11 @@ const deployedContracts = {
           name: "depositERC20",
           inputs: [
             {
+              name: "userAddr",
+              type: "address",
+              internalType: "address",
+            },
+            {
               name: "token",
               type: "address",
               internalType: "contract IERC20",
@@ -358,6 +363,11 @@ const deployedContracts = {
           name: "depositERC20Regular",
           inputs: [
             {
+              name: "userAddr",
+              type: "address",
+              internalType: "address",
+            },
+            {
               name: "token",
               type: "address",
               internalType: "contract IERC20",
@@ -366,24 +376,6 @@ const deployedContracts = {
               name: "amount",
               type: "uint256",
               internalType: "uint256",
-            },
-          ],
-          outputs: [],
-          stateMutability: "nonpayable",
-        },
-        {
-          type: "function",
-          name: "rescueTokens",
-          inputs: [
-            {
-              name: "token",
-              type: "address",
-              internalType: "contract IERC20",
-            },
-            {
-              name: "recipient",
-              type: "address",
-              internalType: "address",
             },
           ],
           outputs: [],
@@ -430,6 +422,11 @@ const deployedContracts = {
           type: "function",
           name: "withdrawERC20",
           inputs: [
+            {
+              name: "userAddr",
+              type: "address",
+              internalType: "address",
+            },
             {
               name: "token",
               type: "address",
@@ -486,7 +483,7 @@ const deployedContracts = {
       inheritedFunctions: {},
     },
     HumanOracleV1: {
-      address: "0x8cbef8f4ca9020a7ea6565480e3d90e1704ffadc",
+      address: "0x03d9858aa5c3a8e79560e833827e6a096643e061",
       abi: [
         {
           type: "constructor",

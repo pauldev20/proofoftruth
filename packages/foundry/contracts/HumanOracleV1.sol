@@ -124,7 +124,7 @@ contract HumanOracleV1 is WorldIdRegister {
 		require(amount <= 5, "max staking amount is 5");
 		address userAddr = address(msg.sender);
 		stakeForAnswer(userAddr, voteId, answerIndex, amount);
-		vault.depositERC20(worldToken, amount, nonce, deadline, signature);
+		vault.depositERC20(userAddr, worldToken, amount, nonce, deadline, signature);
 		emit VoteSubmitted(userAddr, voteId, answerIndex, amount);
 	}
 
@@ -133,7 +133,7 @@ contract HumanOracleV1 is WorldIdRegister {
 		require(!hasUserClaimedForVote(userAddr, voteId), "user already claimed");
 		setUserHasClaimedToTrueForVote(userAddr, voteId);
 		uint256 payout = getStakeResolvedUserAmount(userAddr, voteId);
-		vault.withdrawERC20(worldToken, payout);
+		vault.withdrawERC20(userAddr, worldToken, payout);
 		emit RewardClaimed(userAddr, voteId, payout);
 		return payout;
 	}
@@ -159,7 +159,7 @@ contract HumanOracleV1 is WorldIdRegister {
 
 		createNewStake(voteId, bounty);
 
-		vault.depositERC20Regular(worldToken, bounty);
+		vault.depositERC20Regular(address(msg.sender), worldToken, bounty);
 
 		emit VoteCreated(voteId, getVoteQuestion(voteId), getVoteStartBlock(voteId), getVoteDurationInBlocks(voteId));
 	}
