@@ -1,80 +1,41 @@
-# 🏗 Scaffold-ETH 2
+<div align="center">
+	<img src="https://em-content.zobj.net/source/apple/419/shield_1f6e1-fe0f.png" align="center" width=180 heihgt=180/>
+  <h1>ProofOfTruth</h1>
+	<p align="center">
+    <a href="https://ethglobal.com/showcase/proofoftruth-g31wn">ETHGlobal Showcase</a>
+		<br/>
+		<a href="#about">About This Project</a>
+		·
+		<a href="#how-it-works">How It Works</a>
+  	</p>
+	<br/>
+</div>
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+<div align="center">
+  <img width="385" height="279" alt="Screenshot 2025-08-16 at 00 38 50" src="https://github.com/user-attachments/assets/d280cd39-1070-43ba-afa5-d32cdcc954c8" />
+</div>
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+<br/>
 
-⚙️ Built using NextJS, RainbowKit, Foundry, Wagmi, Viem, and Typescript.
+# About
+Proof-of-Personhood Truth Oracle (think UMA but with WorldID)
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+# Description
+UMA currently handles the resolution of multi-billion dollar Polymarket bets, yet the UMA token that underpins and secures the oracle has a market cap of only ~$200 million as of November 2024.
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+This imbalance introduces a significant risk for Polymarket users due to UMA’s stake-based governance (i.e., greater financial stake equates to more voting power), which makes it susceptible to potential exploitation by large token holders or "whales."
 
-## Requirements
+A more secure approach leverages the collective input of millions of unique humans worldwide to assert the truth of a statement through voting.
 
-Before you begin, you need to install the following tools:
+We have integrated WorldID and World Mini Apps to create a marketplace where proposers can submit questions they wish to verify in exchange for bounties, and World users can earn money by voting on the correct answers.
 
-- [Node (>= v18.18)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+# How It Works
+The project comprises a Mini App within the World App, an oracle contract deployed on Worldchain connected to the Mini App, and a self-hosted The Graph subgraph for indexing contract events and data. We also implemented and deployed a worldIdRegister and a Permit2Vault contract.
 
-## Quickstart
+Together, these components allow the Mini App to:
+- verify unique humans using WorldID.
+- resolve questions with staking functionality.
+- Permit2 approvals and transfers involving the World token.
 
-To get started with Scaffold-ETH 2, follow the steps below:
-
-1. Install dependencies if it was skipped in CLI:
-
-```
-cd my-dapp-example
-yarn install
-```
-
-2. Run a local network in the first terminal:
-
-```
-yarn chain
-```
-
-This command starts a local Ethereum network using Foundry. The network runs on your local machine and can be used for testing and development. You can customize the network configuration in `packages/foundry/foundry.toml`.
-
-3. On a second terminal, deploy the test contract:
-
-```
-yarn deploy
-```
-
-This command deploys a test smart contract to the local network. The contract is located in `packages/foundry/contracts` and can be modified to suit your needs. The `yarn deploy` command uses the deploy script located in `packages/foundry/script` to deploy the contract to the network. You can also customize the deploy script.
-
-4. On a third terminal, start your NextJS app:
-
-```
-yarn start
-```
-
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
-
-Run smart contract test with `yarn foundry:test`
-
-- Edit your smart contracts in `packages/foundry/contracts`
-- Edit your frontend homepage at `packages/nextjs/app/page.tsx`. For guidance on [routing](https://nextjs.org/docs/app/building-your-application/routing/defining-routes) and configuring [pages/layouts](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts) checkout the Next.js documentation.
-- Edit your deployment scripts in `packages/foundry/script`
-
-
-## Documentation
-
-Visit our [docs](https://docs.scaffoldeth.io) to learn how to start building with Scaffold-ETH 2.
-
-To know more about its features, check out our [website](https://scaffoldeth.io).
-
-## Contributing to Scaffold-ETH 2
-
-We welcome contributions to Scaffold-ETH 2!
-
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+The contract is deployed on Worldchain:
+- 0x03d9858aa5c3a8e79560e833827e6a096643e061
